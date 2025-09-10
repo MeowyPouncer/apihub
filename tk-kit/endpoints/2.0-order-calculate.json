@@ -1,0 +1,5 @@
+{
+  "path": "/2.0/order/calculate",
+  "method": "POST",
+  "summary": "Расчет стоимости (v2.0)"
+}

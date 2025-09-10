@@ -1,0 +1,5 @@
+{
+  "path": "/1.4/order/create",
+  "method": "POST",
+  "summary": "Создание заказа (v1.4)"
+}
