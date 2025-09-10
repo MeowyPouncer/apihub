@@ -98,6 +98,7 @@ def main():
             filename = sanitize_filename(path, method)
             with open(output_dir / filename, 'w', encoding='utf-8') as f:
                 json.dump(endpoint_json, f, ensure_ascii=False, indent=2)
+                f.write("\n")
 
     api_info = {
         "base_url": base_url,
@@ -107,6 +108,7 @@ def main():
 
     with open(index_path, 'w', encoding='utf-8') as f:
         json.dump(api_info, f, ensure_ascii=False, indent=2)
+        f.write("\n")
 
 if __name__ == '__main__':
     main()
