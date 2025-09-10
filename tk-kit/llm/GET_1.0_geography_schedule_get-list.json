@@ -2,8 +2,30 @@
   "path": "/1.0/geography/schedule/get-list",
   "method": "GET",
   "summary": "Список расписаний",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "geography_city_id",
+      "description": "Код города географии",
+      "type": "integer",
+      "required": "Нет",
+      "example": "699"
+    },
+    {
+      "name": "geography_address_id",
+      "description": "Код адреса географии",
+      "type": "integer",
+      "required": "Нет",
+      "example": "522"
+    },
+    {
+      "name": "group_id",
+      "description": "Код вида графика",
+      "type": "integer",
+      "required": "Нет",
+      "example": "1"
+    }
+  ],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"to\": \"18:00\", \"day\": \"1\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"1\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"2\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"1\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"3\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"1\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"4\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"1\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"5\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"1\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"6\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"1\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"7\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"1\", \"group_id\": \"1\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"1\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"2\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"2\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"2\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"3\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"2\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"4\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"2\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"5\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"2\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"6\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"0\", \"group_id\": \"2\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"to\": \"18:00\", \"day\": \"7\", \"from\": \"09:00\", \"all_day\": \"0\", \"freeday\": \"1\", \"group_id\": \"2\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}]"
 }

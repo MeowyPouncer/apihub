@@ -2,8 +2,30 @@
   "path": "/1.0/geography/address/get-list",
   "method": "GET",
   "summary": "Список адресов",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "geography_city_id",
+      "description": "Код города географии",
+      "type": "integer",
+      "required": "Нет",
+      "example": "699"
+    },
+    {
+      "name": "withPhone",
+      "description": "Вернуть результат с номерами телефонов",
+      "type": "string",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "withEmail",
+      "description": "Вернуть результат с email",
+      "type": "string",
+      "required": "Нет",
+      "example": "1"
+    }
+  ],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"id\": \"522\", \"lat\": \"50.579762\", \"lon\": \"36.633863\", \"email\": [{\"value\": \"belgorod1@gtdel.net\", \"comment\": \"\", \"geography_address_id\": \"522\"}], \"phone\": [{\"value\": \"+7 (4722) 400-676\", \"comment\": \"\", \"geography_address_id\": \"522\"}, {\"value\": \"+7 (800) 234-56-50\", \"comment\": \"Единая справочная служба\", \"geography_address_id\": \"522\"}], \"value\": \"ул. Михайловское шоссе. д.23\", \"geography_city_id\": \"699\"}]"
 }

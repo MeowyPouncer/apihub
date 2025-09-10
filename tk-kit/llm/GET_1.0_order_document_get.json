@@ -2,8 +2,23 @@
   "path": "/1.0/order/document/get",
   "method": "GET",
   "summary": "Получить документ по заказу",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "sale_number",
+      "description": "номер груза",
+      "type": "string",
+      "required": "Нет",
+      "example": "1105876644"
+    },
+    {
+      "name": "type_code",
+      "description": "Тип документа",
+      "type": "integer",
+      "required": "Нет",
+      "example": 1
+    }
+  ],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"data\": \"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\", \"name\": \"Экспедиторская расписка\"}]"
 }

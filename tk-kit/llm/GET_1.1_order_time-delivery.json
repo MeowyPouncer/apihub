@@ -2,8 +2,102 @@
   "path": "/1.1/order/time-delivery",
   "method": "GET",
   "summary": "Сроки доставки (v1.1)",
-  "request_fields": [],
-  "response_fields": [],
+  "request_fields": [
+    {
+      "name": "city_pickup_code",
+      "description": "Код города откуда",
+      "type": "string",
+      "required": "Да",
+      "example": "910000900000"
+    },
+    {
+      "name": "city_delivery_code",
+      "description": "Код города куда",
+      "type": "string",
+      "required": "Да",
+      "example": "660002900000"
+    },
+    {
+      "name": "adress_id_from",
+      "description": "Код адреса откуда",
+      "type": "string",
+      "required": "Да",
+      "example": "518"
+    },
+    {
+      "name": "adress_id_to",
+      "description": "Код адреса куда",
+      "type": "string",
+      "required": "Да",
+      "example": "733"
+    },
+    {
+      "name": "timestamp",
+      "description": "Дата и время сдачи груза",
+      "type": "string",
+      "required": "Да",
+      "example": "2022-09-15 15:02:00"
+    },
+    {
+      "name": "hardpack",
+      "description": "Наличие жесткой упаковки (да - 1, нет - 0)",
+      "type": "boolean",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "pickup",
+      "description": "Забор груза (да - 1, нет - 0)",
+      "type": "boolean",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "delivery",
+      "description": "Услуга доставки (да - 1, нет - 0)",
+      "type": "boolean",
+      "required": "Нет",
+      "example": "0"
+    }
+  ],
+  "response_fields": [
+    {
+      "name": "date",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    },
+    {
+      "name": "days",
+      "description": "",
+      "type": "integer",
+      "required": "Нет"
+    },
+    {
+      "name": "time",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    },
+    {
+      "name": "status",
+      "description": "",
+      "type": "integer",
+      "required": "Нет"
+    },
+    {
+      "name": "message",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    },
+    {
+      "name": "timestamp_result",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    }
+  ],
   "example_request": "",
-  "example_response": ""
+  "example_response": "{\"date\": \"2022-09-24\", \"days\": 8, \"time\": \"20:00\", \"status\": 1, \"message\": \"\", \"timestamp_result\": \"20220924200000\"}"
 }

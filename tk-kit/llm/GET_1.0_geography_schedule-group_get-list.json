@@ -5,5 +5,5 @@
   "request_fields": [],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"id\": \"1\", \"name\": \"Выдача груза\"}, {\"id\": \"2\", \"name\": \"Прием груза\"}]"
 }

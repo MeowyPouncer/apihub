@@ -2,8 +2,23 @@
   "path": "/1.0/geography/phone/get-list",
   "method": "GET",
   "summary": "Список телефонов",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "geography_city_id",
+      "description": "Код города географии",
+      "type": "integer",
+      "required": "Нет",
+      "example": "699"
+    },
+    {
+      "name": "geography_address_id",
+      "description": "Код адреса географии",
+      "type": "integer",
+      "required": "Нет",
+      "example": "522"
+    }
+  ],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"value\": \"+7 (4722) 400-676\", \"comment\": \"\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}, {\"value\": \"+7 (800) 234-56-50\", \"comment\": \"Единая справочная служба\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}]"
 }

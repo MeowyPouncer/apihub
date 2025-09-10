@@ -2,8 +2,16 @@
   "path": "/1.0/tdd/country/get-list",
   "method": "GET",
   "summary": "Список стран",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "code",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": "RU"
+    }
+  ],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"code\": \"AB\", \"name\": \"Абхазия\"}, {\"code\": \"AM\", \"name\": \"Армения\"}, {\"code\": \"BY\", \"name\": \"Беларусь\"}, {\"code\": \"CN\", \"name\": \"Китай\"}, {\"code\": \"DE\", \"name\": \"Германия\"}, {\"code\": \"KG\", \"name\": \"Киргизия\"}, {\"code\": \"KZ\", \"name\": \"Казахстан\"}, {\"code\": \"RU\", \"name\": \"Россия\"}]"
 }
