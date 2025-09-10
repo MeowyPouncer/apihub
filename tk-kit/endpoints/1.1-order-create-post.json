@@ -1,0 +1,5 @@
+{
+  "path": "/1.1/order/create-post",
+  "method": "POST",
+  "summary": "Создание посылки (v1.1)"
+}
