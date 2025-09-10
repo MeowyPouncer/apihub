@@ -1,0 +1,54 @@
+{
+  "base_url": "https://capi.tk-kit.com",
+  "authorization": [
+    "Bearer token in Authorization header",
+    "token query parameter"
+  ],
+  "endpoints": [
+    {
+      "path": "/1.0/order/calculate-post",
+      "method": "POST",
+      "summary": "Расчет стоимости доставки посылки.",
+      "request_fields": [
+        {"name": "city_pickup_code", "description": "Код города откуда", "type": "string", "required": "Да", "example": "660000100000"},
+        {"name": "city_delivery_code", "description": "Код города куда", "type": "string", "required": "Да", "example": "000000000001"},
+        {"name": "declared_price", "description": "Объявленная стоимость груза (руб)", "type": "string", "required": "Да", "example": "1000"},
+        {"name": "confirmation_price", "description": "Наличие документов подтверждающих стоимость", "type": "string", "required": "Нет", "example": "1"},
+        {"name": "service", "description": "Массив кодов услуг", "type": "array[string]", "required": "Нет", "example": "[\"S089\"]"},
+        {"name": "post_type", "description": "Тип посылки", "type": "string", "required": "Нет", "example": "02"}
+      ],
+      "response_fields": [],
+      "example_request": "{ \"city_pickup_code\": \"660000100000\", \"city_delivery_code\": \"000000000001\" }",
+      "example_response": "[ { \"S\": { \"cost\": 4284 } } ]"
+    },
+    {"path": "/1.0/order/cargo-type/get-list", "method": "GET", "summary": "Список типов груза"},
+    {"path": "/1.0/order/currency/get-list", "method": "GET", "summary": "Список валют"},
+    {"path": "/1.0/order/document/get", "method": "GET", "summary": "Получить документ по заказу"},
+    {"path": "/1.0/order/get", "method": "GET", "summary": "Получить информацию о заказе"},
+    {"path": "/1.0/order/get-list", "method": "GET", "summary": "Список заказов"},
+    {"path": "/1.0/order/mass-create", "method": "POST", "summary": "Массовое создание заказов"},
+    {"path": "/1.0/order/photo/get", "method": "GET", "summary": "Получить фотографии заказа"},
+    {"path": "/1.0/order/service/get-list", "method": "GET", "summary": "Список услуг"},
+    {"path": "/1.0/order/status/get", "method": "GET", "summary": "Статус заказа"},
+    {"path": "/1.0/order/time-delivery", "method": "GET", "summary": "Сроки доставки"},
+    {"path": "/1.1/order/create-post", "method": "POST", "summary": "Создание посылки (v1.1)"},
+    {"path": "/1.1/order/time-delivery", "method": "GET", "summary": "Сроки доставки (v1.1)"},
+    {"path": "/1.4/order/create", "method": "POST", "summary": "Создание заказа (v1.4)"},
+    {"path": "/2.0/order/calculate", "method": "POST", "summary": "Расчет стоимости (v2.0)"},
+    {"path": "/1.0/tdd/city/get-list", "method": "GET", "summary": "Список городов"},
+    {"path": "/1.0/tdd/country/get-list", "method": "GET", "summary": "Список стран"},
+    {"path": "/1.0/tdd/region/get-list", "method": "GET", "summary": "Список регионов"},
+    {"path": "/1.0/tdd/search/by-name", "method": "POST", "summary": "Поиск по наименованию"},
+    {"path": "/1.0/tdd/search/code-city", "method": "POST", "summary": "Поиск кода города"},
+    {"path": "/1.1/tdd/city/get-list", "method": "GET", "summary": "Список городов (v1.1)"},
+    {"path": "/1.1/tdd/search/by-name", "method": "POST", "summary": "Поиск по наименованию (v1.1)"},
+    {"path": "/1.0/profile/get-list", "method": "GET", "summary": "Список профилей"},
+    {"path": "/1.0/geography/address/get-list", "method": "GET", "summary": "Список адресов"},
+    {"path": "/1.0/geography/city/get-list", "method": "GET", "summary": "Список городов географии"},
+    {"path": "/1.0/geography/email/get-list", "method": "GET", "summary": "Список email"},
+    {"path": "/1.0/geography/phone/get-list", "method": "GET", "summary": "Список телефонов"},
+    {"path": "/1.0/geography/schedule-group/get-list", "method": "GET", "summary": "Список групп расписаний"},
+    {"path": "/1.0/geography/schedule/get-list", "method": "GET", "summary": "Список расписаний"},
+    {"path": "/1.1/geography/address/get-list", "method": "GET", "summary": "Список адресов (v1.1)"}
+  ]
+}

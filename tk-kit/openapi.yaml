@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  title: KIT API
+  version: '1.0'
+servers:
+  - url: https://capi.tk-kit.com
+paths:
+  /1.0/order/calculate-post:
+    post:
+      summary: "Расчет стоимости доставки посылки."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                city_pickup_code:
+                  type: string
+                  description: "Код города откуда"
+                  example: '660000100000'
+                city_delivery_code:
+                  type: string
+                  description: "Код города куда"
+                  example: '000000000001'
+                declared_price:
+                  type: string
+                  description: "Объявленная стоимость груза (руб)"
+                  example: '1000'
+                confirmation_price:
+                  type: string
+                  description: "Наличие документов подтверждающих стоимость"
+                  example: '1'
+                service:
+                  type: array
+                  items:
+                    type: string
+                  description: "Массив кодов услуг"
+                  example: ['S089']
+                post_type:
+                  type: string
+                  description: "Тип посылки"
+                  example: '02'
+  /1.0/order/cargo-type/get-list:
+    get:
+      summary: "Список типов груза"
+  /1.0/order/currency/get-list:
+    get:
+      summary: "Список валют"
+  /1.0/order/document/get:
+    get:
+      summary: "Получить документ по заказу"
+  /1.0/order/get:
+    get:
+      summary: "Получить информацию о заказе"
+  /1.0/order/get-list:
+    get:
+      summary: "Список заказов"
+  /1.0/order/mass-create:
+    post:
+      summary: "Массовое создание заказов"
+  /1.0/order/photo/get:
+    get:
+      summary: "Получить фотографии заказа"
+  /1.0/order/service/get-list:
+    get:
+      summary: "Список услуг"
+  /1.0/order/status/get:
+    get:
+      summary: "Статус заказа"
+  /1.0/order/time-delivery:
+    get:
+      summary: "Сроки доставки"
+  /1.1/order/create-post:
+    post:
+      summary: "Создание посылки (v1.1)"
+  /1.1/order/time-delivery:
+    get:
+      summary: "Сроки доставки (v1.1)"
+  /1.4/order/create:
+    post:
+      summary: "Создание заказа (v1.4)"
+  /2.0/order/calculate:
+    post:
+      summary: "Расчет стоимости (v2.0)"
+  /1.0/tdd/city/get-list:
+    get:
+      summary: "Список городов"
+  /1.0/tdd/country/get-list:
+    get:
+      summary: "Список стран"
+  /1.0/tdd/region/get-list:
+    get:
+      summary: "Список регионов"
+  /1.0/tdd/search/by-name:
+    post:
+      summary: "Поиск по наименованию"
+  /1.0/tdd/search/code-city:
+    post:
+      summary: "Поиск кода города"
+  /1.1/tdd/city/get-list:
+    get:
+      summary: "Список городов (v1.1)"
+  /1.1/tdd/search/by-name:
+    post:
+      summary: "Поиск по наименованию (v1.1)"
+  /1.0/profile/get-list:
+    get:
+      summary: "Список профилей"
+  /1.0/geography/address/get-list:
+    get:
+      summary: "Список адресов"
+  /1.0/geography/city/get-list:
+    get:
+      summary: "Список городов географии"
+  /1.0/geography/email/get-list:
+    get:
+      summary: "Список email"
+  /1.0/geography/phone/get-list:
+    get:
+      summary: "Список телефонов"
+  /1.0/geography/schedule-group/get-list:
+    get:
+      summary: "Список групп расписаний"
+  /1.0/geography/schedule/get-list:
+    get:
+      summary: "Список расписаний"
+  /1.1/geography/address/get-list:
+    get:
+      summary: "Список адресов (v1.1)"
