@@ -1,0 +1,9 @@
+{
+  "path": "/1.1/tdd/city/get-list",
+  "method": "GET",
+  "summary": "Список городов (v1.1)",
+  "request_fields": [],
+  "response_fields": [],
+  "example_request": "",
+  "example_response": ""
+}

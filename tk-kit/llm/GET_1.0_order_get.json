@@ -1,0 +1,9 @@
+{
+  "path": "/1.0/order/get",
+  "method": "GET",
+  "summary": "Получить информацию о заказе",
+  "request_fields": [],
+  "response_fields": [],
+  "example_request": "",
+  "example_response": ""
+}

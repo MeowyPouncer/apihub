@@ -1,0 +1,9 @@
+{
+  "path": "/1.0/order/currency/get-list",
+  "method": "GET",
+  "summary": "Список валют",
+  "request_fields": [],
+  "response_fields": [],
+  "example_request": "",
+  "example_response": ""
+}

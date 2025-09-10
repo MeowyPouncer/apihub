@@ -1,0 +1,9 @@
+{
+  "path": "/1.0/order/photo/get",
+  "method": "GET",
+  "summary": "Получить фотографии заказа",
+  "request_fields": [],
+  "response_fields": [],
+  "example_request": "",
+  "example_response": ""
+}

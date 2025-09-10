@@ -1,0 +1,54 @@
+{
+  "path": "/1.0/order/calculate-post",
+  "method": "POST",
+  "summary": "Расчет стоимости доставки посылки.",
+  "request_fields": [
+    {
+      "name": "city_pickup_code",
+      "description": "Код города откуда",
+      "type": "string",
+      "required": "Нет",
+      "example": "660000100000"
+    },
+    {
+      "name": "city_delivery_code",
+      "description": "Код города куда",
+      "type": "string",
+      "required": "Нет",
+      "example": "000000000001"
+    },
+    {
+      "name": "declared_price",
+      "description": "Объявленная стоимость груза (руб)",
+      "type": "string",
+      "required": "Нет",
+      "example": "1000"
+    },
+    {
+      "name": "confirmation_price",
+      "description": "Наличие документов подтверждающих стоимость",
+      "type": "string",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "service",
+      "description": "Массив кодов услуг",
+      "type": "array",
+      "required": "Нет",
+      "example": [
+        "S089"
+      ]
+    },
+    {
+      "name": "post_type",
+      "description": "Тип посылки",
+      "type": "string",
+      "required": "Нет",
+      "example": "02"
+    }
+  ],
+  "response_fields": [],
+  "example_request": "",
+  "example_response": ""
+}

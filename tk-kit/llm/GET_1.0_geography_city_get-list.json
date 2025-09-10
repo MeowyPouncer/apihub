@@ -1,0 +1,9 @@
+{
+  "path": "/1.0/geography/city/get-list",
+  "method": "GET",
+  "summary": "Список городов географии",
+  "request_fields": [],
+  "response_fields": [],
+  "example_request": "",
+  "example_response": ""
+}
