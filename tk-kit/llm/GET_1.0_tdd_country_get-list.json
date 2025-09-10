@@ -1,0 +1,9 @@
+{
+  "path": "/1.0/tdd/country/get-list",
+  "method": "GET",
+  "summary": "Список стран",
+  "request_fields": [],
+  "response_fields": [],
+  "example_request": "",
+  "example_response": ""
+}

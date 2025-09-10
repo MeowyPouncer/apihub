@@ -1,0 +1,9 @@
+{
+  "path": "/1.0/order/status/get",
+  "method": "GET",
+  "summary": "Статус заказа",
+  "request_fields": [],
+  "response_fields": [],
+  "example_request": "",
+  "example_response": ""
+}

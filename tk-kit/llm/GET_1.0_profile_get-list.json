@@ -1,0 +1,9 @@
+{
+  "path": "/1.0/profile/get-list",
+  "method": "GET",
+  "summary": "Список профилей",
+  "request_fields": [],
+  "response_fields": [],
+  "example_request": "",
+  "example_response": ""
+}

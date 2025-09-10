@@ -4,36 +4,156 @@
     "Bearer token in Authorization header",
     "token query parameter"
   ],
-  "endpoints": {
-    "/1.0/order/calculate-post": "endpoints/1.0-order-calculate-post.json",
-    "/1.0/order/cargo-type/get-list": "endpoints/1.0-order-cargo-type-get-list.json",
-    "/1.0/order/currency/get-list": "endpoints/1.0-order-currency-get-list.json",
-    "/1.0/order/document/get": "endpoints/1.0-order-document-get.json",
-    "/1.0/order/get": "endpoints/1.0-order-get.json",
-    "/1.0/order/get-list": "endpoints/1.0-order-get-list.json",
-    "/1.0/order/mass-create": "endpoints/1.0-order-mass-create.json",
-    "/1.0/order/photo/get": "endpoints/1.0-order-photo-get.json",
-    "/1.0/order/service/get-list": "endpoints/1.0-order-service-get-list.json",
-    "/1.0/order/status/get": "endpoints/1.0-order-status-get.json",
-    "/1.0/order/time-delivery": "endpoints/1.0-order-time-delivery.json",
-    "/1.1/order/create-post": "endpoints/1.1-order-create-post.json",
-    "/1.1/order/time-delivery": "endpoints/1.1-order-time-delivery.json",
-    "/1.4/order/create": "endpoints/1.4-order-create.json",
-    "/2.0/order/calculate": "endpoints/2.0-order-calculate.json",
-    "/1.0/tdd/city/get-list": "endpoints/1.0-tdd-city-get-list.json",
-    "/1.0/tdd/country/get-list": "endpoints/1.0-tdd-country-get-list.json",
-    "/1.0/tdd/region/get-list": "endpoints/1.0-tdd-region-get-list.json",
-    "/1.0/tdd/search/by-name": "endpoints/1.0-tdd-search-by-name.json",
-    "/1.0/tdd/search/code-city": "endpoints/1.0-tdd-search-code-city.json",
-    "/1.1/tdd/city/get-list": "endpoints/1.1-tdd-city-get-list.json",
-    "/1.1/tdd/search/by-name": "endpoints/1.1-tdd-search-by-name.json",
-    "/1.0/profile/get-list": "endpoints/1.0-profile-get-list.json",
-    "/1.0/geography/address/get-list": "endpoints/1.0-geography-address-get-list.json",
-    "/1.0/geography/city/get-list": "endpoints/1.0-geography-city-get-list.json",
-    "/1.0/geography/email/get-list": "endpoints/1.0-geography-email-get-list.json",
-    "/1.0/geography/phone/get-list": "endpoints/1.0-geography-phone-get-list.json",
-    "/1.0/geography/schedule-group/get-list": "endpoints/1.0-geography-schedule-group-get-list.json",
-    "/1.0/geography/schedule/get-list": "endpoints/1.0-geography-schedule-get-list.json",
-    "/1.1/geography/address/get-list": "endpoints/1.1-geography-address-get-list.json"
-  }
+  "endpoints": [
+    {
+      "path": "/1.0/order/calculate-post",
+      "method": "POST",
+      "summary": "Расчет стоимости доставки посылки."
+    },
+    {
+      "path": "/1.0/order/cargo-type/get-list",
+      "method": "GET",
+      "summary": "Список типов груза"
+    },
+    {
+      "path": "/1.0/order/currency/get-list",
+      "method": "GET",
+      "summary": "Список валют"
+    },
+    {
+      "path": "/1.0/order/document/get",
+      "method": "GET",
+      "summary": "Получить документ по заказу"
+    },
+    {
+      "path": "/1.0/order/get",
+      "method": "GET",
+      "summary": "Получить информацию о заказе"
+    },
+    {
+      "path": "/1.0/order/get-list",
+      "method": "GET",
+      "summary": "Список заказов"
+    },
+    {
+      "path": "/1.0/order/mass-create",
+      "method": "POST",
+      "summary": "Массовое создание заказов"
+    },
+    {
+      "path": "/1.0/order/photo/get",
+      "method": "GET",
+      "summary": "Получить фотографии заказа"
+    },
+    {
+      "path": "/1.0/order/service/get-list",
+      "method": "GET",
+      "summary": "Список услуг"
+    },
+    {
+      "path": "/1.0/order/status/get",
+      "method": "GET",
+      "summary": "Статус заказа"
+    },
+    {
+      "path": "/1.0/order/time-delivery",
+      "method": "GET",
+      "summary": "Сроки доставки"
+    },
+    {
+      "path": "/1.1/order/create-post",
+      "method": "POST",
+      "summary": "Создание посылки (v1.1)"
+    },
+    {
+      "path": "/1.1/order/time-delivery",
+      "method": "GET",
+      "summary": "Сроки доставки (v1.1)"
+    },
+    {
+      "path": "/1.4/order/create",
+      "method": "POST",
+      "summary": "Создание заказа (v1.4)"
+    },
+    {
+      "path": "/2.0/order/calculate",
+      "method": "POST",
+      "summary": "Расчет стоимости (v2.0)"
+    },
+    {
+      "path": "/1.0/tdd/city/get-list",
+      "method": "GET",
+      "summary": "Список городов"
+    },
+    {
+      "path": "/1.0/tdd/country/get-list",
+      "method": "GET",
+      "summary": "Список стран"
+    },
+    {
+      "path": "/1.0/tdd/region/get-list",
+      "method": "GET",
+      "summary": "Список регионов"
+    },
+    {
+      "path": "/1.0/tdd/search/by-name",
+      "method": "POST",
+      "summary": "Поиск по наименованию"
+    },
+    {
+      "path": "/1.0/tdd/search/code-city",
+      "method": "POST",
+      "summary": "Поиск кода города"
+    },
+    {
+      "path": "/1.1/tdd/city/get-list",
+      "method": "GET",
+      "summary": "Список городов (v1.1)"
+    },
+    {
+      "path": "/1.1/tdd/search/by-name",
+      "method": "POST",
+      "summary": "Поиск по наименованию (v1.1)"
+    },
+    {
+      "path": "/1.0/profile/get-list",
+      "method": "GET",
+      "summary": "Список профилей"
+    },
+    {
+      "path": "/1.0/geography/address/get-list",
+      "method": "GET",
+      "summary": "Список адресов"
+    },
+    {
+      "path": "/1.0/geography/city/get-list",
+      "method": "GET",
+      "summary": "Список городов географии"
+    },
+    {
+      "path": "/1.0/geography/email/get-list",
+      "method": "GET",
+      "summary": "Список email"
+    },
+    {
+      "path": "/1.0/geography/phone/get-list",
+      "method": "GET",
+      "summary": "Список телефонов"
+    },
+    {
+      "path": "/1.0/geography/schedule-group/get-list",
+      "method": "GET",
+      "summary": "Список групп расписаний"
+    },
+    {
+      "path": "/1.0/geography/schedule/get-list",
+      "method": "GET",
+      "summary": "Список расписаний"
+    },
+    {
+      "path": "/1.1/geography/address/get-list",
+      "method": "GET",
+      "summary": "Список адресов (v1.1)"
+    }
+  ]
 }
