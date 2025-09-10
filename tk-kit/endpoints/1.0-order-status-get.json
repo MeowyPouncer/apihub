@@ -1,0 +1,5 @@
+{
+  "path": "/1.0/order/status/get",
+  "method": "GET",
+  "summary": "Статус заказа"
+}
