@@ -2,8 +2,44 @@
   "path": "/1.0/order/get-list",
   "method": "GET",
   "summary": "Список заказов",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "date_start",
+      "description": "Дата начала диапозона",
+      "type": "string",
+      "required": "Да",
+      "example": "2018-04-01"
+    },
+    {
+      "name": "date_end",
+      "description": "Дата завершение диапозона",
+      "type": "string",
+      "required": "Да",
+      "example": "2018-06-30"
+    },
+    {
+      "name": "limit",
+      "description": "Количество записей",
+      "type": "integer",
+      "required": "Нет",
+      "example": "10"
+    },
+    {
+      "name": "offset",
+      "description": "смещение",
+      "type": "integer",
+      "required": "Нет",
+      "example": "10"
+    },
+    {
+      "name": "profile_id",
+      "description": "id профиля",
+      "type": "integer",
+      "required": "Нет",
+      "example": "1"
+    }
+  ],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"to\": {\"code\": \"660000100000\", \"name\": \"Екатеринбург\", \"type\": \"Город\", \"region_code\": \"66\", \"country_code\": \"RU\"}, \"date\": \"2018-04-09\", \"from\": {\"code\": \"720000200000\", \"name\": \"Тобольск\", \"type\": \"Город\", \"region_code\": \"72\", \"country_code\": \"RU\"}, \"time\": \"00:00:00\", \"price\": \"150.0\", \"sender\": {\"debitor\": \"0001011311\", \"short_name\": \"ООО ТК \\\"КИТ\\\"\"}, \"status\": [{\"code\": \"00\", \"date\": \"2018-04-09\", \"name\": \"Новый заказ\", \"time\": \"09:56:57\"}, {\"code\": \"01\", \"date\": \"2018-04-09\", \"name\": \"Груз принят\", \"time\": \"12:04:49\"}, {\"code\": \"02\", \"date\": \"2018-04-09\", \"name\": \"Отправлен\", \"time\": \"12:46:45\"}, {\"code\": \"03\", \"date\": \"2018-04-10\", \"name\": \"Прибыл\", \"time\": \"09:39:37\"}], \"payment\": {\"code\": \"2\", \"name\": \"Выставлен\"}, \"customer\": {\"debitor\": \"0001011311\", \"short_name\": \"ООО ТК \\\"КИТ\\\"\"}, \"recipient\": {\"debitor\": \"0001011311\", \"short_name\": \"ООО ТК \\\"КИТ\\\"\"}, \"sale_number\": 6171781901, \"cargo_number\": \"XXXXXX0062074336\", \"currency_code\": \"RUB\"}]"
 }

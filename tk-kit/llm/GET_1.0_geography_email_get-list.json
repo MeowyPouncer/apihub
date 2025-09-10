@@ -2,8 +2,23 @@
   "path": "/1.0/geography/email/get-list",
   "method": "GET",
   "summary": "Список email",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "geography_city_id",
+      "description": "Код города географии",
+      "type": "integer",
+      "required": "Нет",
+      "example": "699"
+    },
+    {
+      "name": "geography_address_id",
+      "description": "Код адреса географии",
+      "type": "integer",
+      "required": "Нет",
+      "example": "522"
+    }
+  ],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"value\": \"belgorod1@gtdel.net\", \"comment\": \"\", \"geography_city_id\": \"699\", \"geography_address_id\": \"522\"}]"
 }

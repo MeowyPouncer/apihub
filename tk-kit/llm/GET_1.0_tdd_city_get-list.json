@@ -2,8 +2,30 @@
   "path": "/1.0/tdd/city/get-list",
   "method": "GET",
   "summary": "Список городов",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "code",
+      "description": "Код населенного пункта",
+      "type": "string",
+      "required": "Нет",
+      "example": "660002900000"
+    },
+    {
+      "name": "region_code",
+      "description": "Код региона",
+      "type": "string",
+      "required": "Нет",
+      "example": "66"
+    },
+    {
+      "name": "country_code",
+      "description": "Код страны",
+      "type": "string",
+      "required": "Нет",
+      "example": "RU"
+    }
+  ],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"code\": \"660002900000\", \"name\": \"Ирбит\", \"type\": \"гор.\", \"region_code\": \"66\", \"country_code\": \"RU\", \"required_pickup\": 1, \"required_delivery\": 1}]"
 }

@@ -7,33 +7,33 @@
       "name": "city_pickup_code",
       "description": "Код города откуда",
       "type": "string",
-      "required": "Нет",
+      "required": "Да",
       "example": "660000100000"
     },
     {
       "name": "city_delivery_code",
       "description": "Код города куда",
       "type": "string",
-      "required": "Нет",
-      "example": "000000000001"
+      "required": "Да",
+      "example": "770000000000"
     },
     {
       "name": "declared_price",
       "description": "Объявленная стоимость груза (руб)",
-      "type": "string",
-      "required": "Нет",
-      "example": "1000"
+      "type": "integer",
+      "required": "Да",
+      "example": "6000"
     },
     {
       "name": "confirmation_price",
       "description": "Наличие документов подтверждающих стоимость",
-      "type": "string",
-      "required": "Нет",
+      "type": "boolean",
+      "required": "Да",
       "example": "1"
     },
     {
       "name": "service",
-      "description": "Массив кодов услуг",
+      "description": "массив кодов услуг",
       "type": "array",
       "required": "Нет",
       "example": [
@@ -44,11 +44,49 @@
       "name": "post_type",
       "description": "Тип посылки",
       "type": "string",
-      "required": "Нет",
+      "required": "Да",
       "example": "02"
+    },
+    {
+      "name": "insurance",
+      "description": "Услуга страхования груза",
+      "type": "integer",
+      "required": "Да",
+      "example": "1"
+    },
+    {
+      "name": "insurance_agent_code",
+      "description": "Код страхового агента",
+      "type": "string",
+      "required": "Да",
+      "example": "8000152423"
+    },
+    {
+      "name": "have_doc",
+      "description": "Есть документы подтверждающие стоимость груза",
+      "type": "integer",
+      "required": "Да",
+      "example": "1"
+    },
+    {
+      "name": "cargo_type_code",
+      "description": "Код характера груза",
+      "type": "string",
+      "required": "Нет",
+      "example": "01"
+    },
+    {
+      "name": "currency_code",
+      "description": "Валюта результата расчета",
+      "type": "string",
+      "required": "Нет",
+      "example": [
+        "KZT",
+        "RUB"
+      ]
     }
   ],
   "response_fields": [],
-  "example_request": "",
-  "example_response": ""
+  "example_request": "{\"city_pickup_code\": \"660000100000\", \"city_delivery_code\": \"770000000000\", \"service\": [\"S089\"], \"declared_price\": \"6000\", \"post_type\": \"02\", \"currency_code\": [\"KZT\", \"RUB\"], \"insurance\": \"1\", \"insurance_agent_code\": \"8000152423\"}",
+  "example_response": "[{\"S\": {\"cost\": 4284, \"name\": \"Посылка S\", \"time\": 3, \"detail\": [{\"code\": \"S031\", \"name\": \"Возмещение страхования груза по дейст.ст\", \"price\": 204}, {\"code\": \"S089\", \"name\": \"ЗТТ (сборный паллетный борт)\", \"price\": 2040}, {\"code\": \"S039\", \"name\": \"Груз\", \"price\": 2040}], \"currency_code\": \"KZT\"}}, {\"S\": {\"cost\": 630, \"name\": \"Посылка S\", \"time\": 3, \"detail\": [{\"code\": \"S031\", \"name\": \"Возмещение страхования груза по дейст.ст\", \"price\": 30}, {\"code\": \"S089\", \"name\": \"ЗТТ (сборный паллетный борт)\", \"price\": 300}, {\"code\": \"S039\", \"name\": \"Груз\", \"price\": 300}], \"currency_code\": \"RUB\"}}]"
 }

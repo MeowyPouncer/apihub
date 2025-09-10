@@ -2,8 +2,48 @@
   "path": "/1.0/order/mass-create",
   "method": "POST",
   "summary": "Массовое создание заказов",
-  "request_fields": [],
-  "response_fields": [],
-  "example_request": "",
-  "example_response": ""
+  "request_fields": [
+    {
+      "name": "profile_id",
+      "description": "id профиля",
+      "type": "integer",
+      "required": "Да",
+      "example": 181048
+    },
+    {
+      "name": "file",
+      "description": "Файл",
+      "type": "string",
+      "required": "Да",
+      "example": "massload_template.xlsx"
+    }
+  ],
+  "response_fields": [
+    {
+      "name": "message",
+      "description": "",
+      "type": "array",
+      "required": "Нет"
+    },
+    {
+      "name": "row_number",
+      "description": "",
+      "type": "integer",
+      "required": "Нет"
+    },
+    {
+      "name": "sale_number",
+      "description": "",
+      "type": "integer",
+      "required": "Нет"
+    },
+    {
+      "name": "cargo_number",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    }
+  ],
+  "example_request": "{\"profile_id\": 181048, \"file\": \"massload_template.xlsx\"}",
+  "example_response": "{\"message\": [], \"row_number\": 3, \"sale_number\": 1105891318, \"cargo_number\": \"ЕКБМСК0100010832\"}"
 }

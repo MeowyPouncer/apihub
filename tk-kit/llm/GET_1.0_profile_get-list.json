@@ -5,5 +5,5 @@
   "request_fields": [],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"id\": 26794, \"name\": \"ТРАНСПОРТНАЯ КОМПАНИЯ \\\"GTD\\\"\", \"debitor\": \"0009999999\"}, {\"id\": 29696, \"name\": \"ООО КАШАЛОТ\", \"debitor\": \"0008888888\"}]"
 }

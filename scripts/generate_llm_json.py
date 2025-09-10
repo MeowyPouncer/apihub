@@ -76,7 +76,18 @@ def main():
             req_body = details.get('requestBody', {})
             req_content = req_body.get('content', {}).get('application/json', {})
             schema = req_content.get('schema', {})
-            endpoint_json["request_fields"] = extract_fields(schema)
+            request_fields = extract_fields(schema)
+            for param in details.get('parameters', []) or []:
+                field = {
+                    "name": param.get('name', ''),
+                    "description": param.get('description', ''),
+                    "type": param.get('schema', {}).get('type', ''),
+                    "required": "Да" if param.get('required') else "Нет",
+                }
+                if 'example' in param:
+                    field['example'] = param['example']
+                request_fields.append(field)
+            endpoint_json["request_fields"] = request_fields
 
             resp = details.get('responses', {}).get('200') or details.get('responses', {}).get('201') or {}
             resp_content = resp.get('content', {}).get('application/json', {})

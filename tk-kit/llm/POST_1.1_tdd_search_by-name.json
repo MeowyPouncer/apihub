@@ -2,8 +2,16 @@
   "path": "/1.1/tdd/search/by-name",
   "method": "POST",
   "summary": "Поиск по наименованию (v1.1)",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "title",
+      "description": "Имя города",
+      "type": "string",
+      "required": "Нет",
+      "example": "Ирбит"
+    }
+  ],
   "response_fields": [],
-  "example_request": "",
-  "example_response": ""
+  "example_request": "{\"title\": \"Ирбит\"}",
+  "example_response": "[{\"code\": \"660002900000\", \"name\": \"Ирбит\", \"type\": \"гор.\", \"kladr\": \"6600002900000\", \"region_code\": \"66\", \"country_code\": \"RU\", \"required_pickup\": 1, \"required_delivery\": 1}]"
 }

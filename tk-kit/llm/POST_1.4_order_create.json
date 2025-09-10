@@ -2,8 +2,580 @@
   "path": "/1.4/order/create",
   "method": "POST",
   "summary": "Создание заказа (v1.4)",
-  "request_fields": [],
-  "response_fields": [],
-  "example_request": "",
-  "example_response": ""
+  "request_fields": [
+    {
+      "name": "city_pickup_code",
+      "description": "Код города откуда",
+      "type": "string",
+      "required": "Да",
+      "example": "771100000600"
+    },
+    {
+      "name": "city_delivery_code",
+      "description": "Код города куда",
+      "type": "string",
+      "required": "Да",
+      "example": "660000100000"
+    },
+    {
+      "name": "pickpoint_address_code",
+      "description": "Код терминала получения",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "customer",
+      "description": "Заказчик",
+      "type": "string",
+      "required": "Да",
+      "example": {
+        "debitor_type": "1",
+        "real_contact_name": "Фамилия Имя Отчество",
+        "real_contact_phone": "+79999999999",
+        "country_code": "RU"
+      }
+    },
+    {
+      "name": "sender",
+      "description": "Отправитель",
+      "type": "string",
+      "required": "Да",
+      "example": {
+        "debitor_type": "1",
+        "real_contact_name": "Фамилия Имя Отчество",
+        "real_contact_phone": "+79999999999",
+        "country_code": "RU"
+      }
+    },
+    {
+      "name": "receiver",
+      "description": "Получатель",
+      "type": "string",
+      "required": "Да",
+      "example": {
+        "debitor_type": "1",
+        "real_contact_name": "Фамилия Имя Отчество",
+        "real_contact_phone": "+79999999999",
+        "country_code": "RU"
+      }
+    },
+    {
+      "name": "type",
+      "description": "Вид перевозки",
+      "type": "integer",
+      "required": "Нет",
+      "example": "01"
+    },
+    {
+      "name": "declared_price",
+      "description": "Объявленная стоимость груза (руб)",
+      "type": "integer",
+      "required": "Да",
+      "example": "100"
+    },
+    {
+      "name": "confirmation_price",
+      "description": "Наличие документов подтверждающих стоимость",
+      "type": "boolean",
+      "required": "Да",
+      "example": "1"
+    },
+    {
+      "name": "inner_track_number",
+      "description": "Внутренний трек-номер груза",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "service",
+      "description": "массив кодов услуг",
+      "type": "string",
+      "required": "Нет",
+      "example": []
+    },
+    {
+      "name": "pick_up_prr",
+      "description": "Услуга ПРР при заборе груза",
+      "type": "boolean",
+      "required": "Нет",
+      "example": 1
+    },
+    {
+      "name": "pick_up_prr_floor",
+      "description": "Этаж подьема",
+      "type": "integer",
+      "required": "Нет",
+      "example": 9
+    },
+    {
+      "name": "pick_up_prr_distance",
+      "description": "Метры переноса груза",
+      "type": "integer",
+      "required": "Нет",
+      "example": 7
+    },
+    {
+      "name": "pick_up_prr_freight_elevator",
+      "description": "Наличие грузового лифта",
+      "type": "integer",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "delivery_prr",
+      "description": "Услуга ПРР при доставке",
+      "type": "boolean",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "delivery_prr_floor",
+      "description": "Этаж подьема",
+      "type": "integer",
+      "required": "Нет",
+      "example": "4"
+    },
+    {
+      "name": "delivery_prr_distance",
+      "description": "Метры переноса груза",
+      "type": "integer",
+      "required": "Нет",
+      "example": "4"
+    },
+    {
+      "name": "delivery_prr_freight_elevator",
+      "description": "Наличие грузового лифта",
+      "type": "integer",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "height",
+      "description": "Высота груза (см) позиции",
+      "type": "string",
+      "required": "Да",
+      "example": "places[0][height] = 100places[1][height]  = 120"
+    },
+    {
+      "name": "width",
+      "description": "Ширина груза (см) позиции",
+      "type": "string",
+      "required": "Да",
+      "example": "places[0][width] = 100places[1][width] = 120"
+    },
+    {
+      "name": "length",
+      "description": "Длина груза (см) позиции",
+      "type": "string",
+      "required": "Да",
+      "example": "places[0][length] = 100places[1][length] = 120"
+    },
+    {
+      "name": "count_place",
+      "description": "Количество мест в позиции",
+      "type": "integer",
+      "required": "Да",
+      "example": "places[0][count_place] = 1places[1][count_place] = 2"
+    },
+    {
+      "name": "weight",
+      "description": "Масса КГ позиции",
+      "type": "integer",
+      "required": "Да",
+      "example": "places[0][weight] = 2places[1][weight] = 4"
+    },
+    {
+      "name": "volume",
+      "description": "Объем М³ позиции",
+      "type": "array",
+      "required": "Да",
+      "example": "places[1][volume] = 1places[0][volume] = 2"
+    },
+    {
+      "name": "cargo_type_code",
+      "description": "Код характера груза (перечень /1.0/order/cargo-type/get-list)",
+      "type": "string",
+      "required": "Да",
+      "example": "places[1][cargo_type_code] = \"Z11\"places[0][cargo_type_code] = \"Z01\""
+    },
+    {
+      "name": "pick_up",
+      "description": "Забор груза",
+      "type": "integer",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "pickup_date",
+      "description": "Дата забора",
+      "type": "string",
+      "required": "Да",
+      "example": "2025-07-14"
+    },
+    {
+      "name": "pickup_time_start",
+      "description": "Время начала забора",
+      "type": "string",
+      "required": "Да",
+      "example": "10:00"
+    },
+    {
+      "name": "pickup_time_end",
+      "description": "Время окончания забора",
+      "type": "string",
+      "required": "Да",
+      "example": "17:00"
+    },
+    {
+      "name": "pickup_comment",
+      "description": "Комментарий к забору груза",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "pickup_r",
+      "description": "Забор с другого адреса отправителя",
+      "type": "integer",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "pickup_street",
+      "description": "Улица другого адреса отправителя",
+      "type": "string",
+      "required": "Да",
+      "example": ""
+    },
+    {
+      "name": "pickup_house",
+      "description": "Дом другого адреса отправителя",
+      "type": "string",
+      "required": "Да",
+      "example": ""
+    },
+    {
+      "name": "pickup_supp",
+      "description": "Корпус другого адреса отправителя",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "pickup_room",
+      "description": "Офис/кварира другого адреса отправителя",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "deliver",
+      "description": "Доставка груза по городу",
+      "type": "integer",
+      "required": "Нет",
+      "example": 0
+    },
+    {
+      "name": "delivery_date",
+      "description": "Дата доставки",
+      "type": "string",
+      "required": "Да",
+      "example": "2025-07-14"
+    },
+    {
+      "name": "delivery_time_start",
+      "description": "Время начала доставки",
+      "type": "string",
+      "required": "Да",
+      "example": "10:00"
+    },
+    {
+      "name": "delivery_time_end",
+      "description": "Время окончания доставки",
+      "type": "string",
+      "required": "Да",
+      "example": "17:00"
+    },
+    {
+      "name": "delivery_comment",
+      "description": "Комментарий к доставке",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "delivery_r",
+      "description": "Доставка на другой адрес получателя",
+      "type": "integer",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "delivery_street",
+      "description": "Улица другого адреса получателя",
+      "type": "string",
+      "required": "Да",
+      "example": ""
+    },
+    {
+      "name": "delivery_house",
+      "description": "Дом другого адреса получателя",
+      "type": "string",
+      "required": "Да",
+      "example": ""
+    },
+    {
+      "name": "delivery_supp",
+      "description": "Корпус другого адреса получателя",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "delivery_room",
+      "description": "Офис/кварира другого адреса получателя",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "additional_payment_shipping",
+      "description": "Плательщик перевозки",
+      "type": "string",
+      "required": "Нет",
+      "example": "SE"
+    },
+    {
+      "name": "additional_payment_pickup",
+      "description": "Плательщик забора груза",
+      "type": "string",
+      "required": "Нет",
+      "example": "SE"
+    },
+    {
+      "name": "additional_payment_delivery",
+      "description": "Плательщик доставки груза",
+      "type": "string",
+      "required": "Нет",
+      "example": "SE"
+    },
+    {
+      "name": "insurance",
+      "description": "Услуга страхования груза",
+      "type": "integer",
+      "required": "Да",
+      "example": 0
+    },
+    {
+      "name": "insurance_agent_code",
+      "description": "Код страхового агента",
+      "type": "string",
+      "required": "Да",
+      "example": "8000152423"
+    },
+    {
+      "name": "currency_code",
+      "description": "Валюта результата расчета",
+      "type": "string",
+      "required": "Нет",
+      "example": "currency_code[0] = KZTcurrency_code[1] = RUB"
+    },
+    {
+      "name": "all_places_same",
+      "description": "Все места одинаковы по размеру",
+      "type": "boolean",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "comment",
+      "description": "Комментарий",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "document_type",
+      "description": "Массив типов документов",
+      "type": "string",
+      "required": "Нет",
+      "example": [
+        "04"
+      ]
+    },
+    {
+      "name": "document_number",
+      "description": "Массив номеров документов",
+      "type": "string",
+      "required": "Нет",
+      "example": [
+        "1"
+      ]
+    },
+    {
+      "name": "document_date",
+      "description": "Массив дат документов",
+      "type": "string",
+      "required": "Нет",
+      "example": [
+        "2025-07-14"
+      ]
+    },
+    {
+      "name": "document_file",
+      "description": "Массив файлов документов",
+      "type": "string",
+      "required": "Нет",
+      "example": []
+    },
+    {
+      "name": "dispatch_address_code",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "places",
+      "description": "",
+      "type": "array",
+      "required": "Нет",
+      "example": [
+        {
+          "volume": "0.025",
+          "weight": "80",
+          "count_place": "1",
+          "length": "250",
+          "height": "10",
+          "width": "10",
+          "service": [
+            "T001"
+          ],
+          "cargo_type": "Z32"
+        }
+      ]
+    },
+    {
+      "name": "real_city",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "real_country",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "real_street",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "real_house",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "seal",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "pre_packaging",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "palletizing_transparent",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "palletizing_tint",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "restruct_deliv",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "restruct_pickup",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "palleting",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": "0"
+    },
+    {
+      "name": "additional_payment_shipping_email",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "additional_payment_pickup_email",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    },
+    {
+      "name": "additional_payment_delivery_email",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": ""
+    }
+  ],
+  "response_fields": [
+    {
+      "name": "result",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "status",
+      "description": "",
+      "type": "integer",
+      "required": "Нет"
+    },
+    {
+      "name": "message",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    }
+  ],
+  "example_request": "{\"inner_track_number\": \"\", \"city_pickup_code\": \"771100000600\", \"city_delivery_code\": \"660000100000\", \"dispatch_address_code\": \"\", \"pick_up_prr\": 1, \"pick_up_prr_floor\": 9, \"pick_up_prr_distance\": 7, \"pick_up_prr_freight_elevator\": \"\", \"places\": [{\"volume\": \"0.025\", \"weight\": \"80\", \"count_place\": \"1\", \"length\": \"250\", \"height\": \"10\", \"width\": \"10\", \"service\": [\"T001\"], \"cargo_type\": \"Z32\"}], \"document_type\": [\"04\"], \"document_number\": [\"1\"], \"document_date\": [\"2025-07-14\"], \"document_file\": [], \"comment\": \"\", \"deliver\": 0, \"delivery_comment\": \"\", \"delivery_date\": \"2025-07-14\", \"delivery_time_start\": \"10:00\", \"delivery_time_end\": \"17:00\", \"delivery_r\": \"0\", \"delivery_street\": \"\", \"delivery_house\": \"\", \"delivery_supp\": \"\", \"delivery_room\": \"\", \"real_city\": \"\", \"real_country\": \"\", \"real_street\": \"\", \"real_house\": \"\", \"pick_up\": \"1\", \"pickup_date\": \"2025-07-14\", \"pickup_time_start\": \"10:00\", \"pickup_time_end\": \"17:00\", \"pickup_comment\": \"\", \"pickup_r\": \"0\", \"pickup_street\": \"\", \"pickup_house\": \"\", \"pickup_supp\": \"\", \"pickup_room\": \"\", \"customer\": {\"debitor_type\": \"1\", \"real_contact_name\": \"Фамилия Имя Отчество\", \"real_contact_phone\": \"+79999999999\", \"country_code\": \"RU\"}, \"sender\": {\"debitor_type\": \"1\", \"real_contact_name\": \"Фамилия Имя Отчество\", \"real_contact_phone\": \"+79999999999\", \"country_code\": \"RU\"}, \"receiver\": {\"debitor_type\": \"1\", \"real_contact_name\": \"Фамилия Имя Отчество\", \"real_contact_phone\": \"+79999999999\", \"country_code\": \"RU\"}, \"type\": \"01\", \"declared_price\": \"100\", \"all_places_same\": \"0\", \"confirmation_price\": \"1\", \"service\": [], \"insurance\": 0, \"insurance_agent_code\": \"8000152423\", \"seal\": \"0\", \"pre_packaging\": \"0\", \"palletizing_transparent\": \"0\", \"palletizing_tint\": \"0\", \"restruct_deliv\": \"0\", \"restruct_pickup\": \"0\", \"palleting\": \"0\", \"additional_payment_shipping\": \"SE\", \"additional_payment_pickup\": \"SE\", \"additional_payment_delivery\": \"SE\", \"additional_payment_shipping_email\": \"\", \"additional_payment_pickup_email\": \"\", \"additional_payment_delivery_email\": \"\", \"pickpoint_address_code\": \"\"}",
+  "example_response": "{\"result\": {\"sale_number\": 3105877041, \"cargo_number\": \"ТЮМРАД0200013090\"}, \"status\": 1, \"message\": \"Спасибо. Скоро с Вами свяжется наш оператор.\"}"
 }

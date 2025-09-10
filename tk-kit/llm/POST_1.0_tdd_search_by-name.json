@@ -2,8 +2,16 @@
   "path": "/1.0/tdd/search/by-name",
   "method": "POST",
   "summary": "Поиск по наименованию",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "title",
+      "description": "Имя города",
+      "type": "string",
+      "required": "Нет",
+      "example": "Екатеринбург"
+    }
+  ],
   "response_fields": [],
-  "example_request": "",
-  "example_response": ""
+  "example_request": "{\"title\": \"Екатеринбург\"}",
+  "example_response": "[{\"code\": \"660000100000\", \"name\": \"Екатеринбург\", \"type\": \"гор.\", \"region_code\": \"66\", \"country_code\": \"RU\", \"required_pickup\": 0, \"required_delivery\": 0}]"
 }

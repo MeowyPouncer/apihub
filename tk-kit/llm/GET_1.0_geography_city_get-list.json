@@ -2,8 +2,23 @@
   "path": "/1.0/geography/city/get-list",
   "method": "GET",
   "summary": "Список городов географии",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "id",
+      "description": "id города",
+      "type": "integer",
+      "required": "Нет",
+      "example": "695"
+    },
+    {
+      "name": "tdd_city_code",
+      "description": "Код города",
+      "type": "string",
+      "required": "Нет",
+      "example": "910000900000"
+    }
+  ],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"id\": \"695\", \"sxgeoCity\": {\"id\": \"713513\", \"lat\": \"44.67631\", \"lon\": \"34.40778\"}, \"sxgeo_city_id\": \"713513\", \"tdd_city_code\": \"910000900000\"}]"
 }

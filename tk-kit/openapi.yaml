@@ -3,11 +3,11 @@ info:
   title: KIT API
   version: '1.0'
 servers:
-  - url: https://capi.tk-kit.com
+- url: https://capi.tk-kit.com
 paths:
   /1.0/order/calculate-post:
     post:
-      summary: "Расчет стоимости доставки посылки."
+      summary: Расчет стоимости доставки посылки.
       requestBody:
         required: true
         content:
@@ -17,114 +17,2781 @@ paths:
               properties:
                 city_pickup_code:
                   type: string
-                  description: "Код города откуда"
+                  description: Код города откуда
                   example: '660000100000'
                 city_delivery_code:
                   type: string
-                  description: "Код города куда"
-                  example: '000000000001'
+                  description: Код города куда
+                  example: '770000000000'
                 declared_price:
-                  type: string
-                  description: "Объявленная стоимость груза (руб)"
-                  example: '1000'
+                  type: integer
+                  description: Объявленная стоимость груза (руб)
+                  example: '6000'
                 confirmation_price:
-                  type: string
-                  description: "Наличие документов подтверждающих стоимость"
+                  type: boolean
+                  description: Наличие документов подтверждающих стоимость
                   example: '1'
                 service:
                   type: array
-                  items:
-                    type: string
-                  description: "Массив кодов услуг"
-                  example: ['S089']
+                  description: массив кодов услуг
+                  example: &id001
+                  - S089
                 post_type:
                   type: string
-                  description: "Тип посылки"
+                  description: Тип посылки
                   example: '02'
+                insurance:
+                  type: integer
+                  description: Услуга страхования груза
+                  example: '1'
+                insurance_agent_code:
+                  type: string
+                  description: Код страхового агента
+                  example: '8000152423'
+                have_doc:
+                  type: integer
+                  description: Есть документы подтверждающие стоимость груза
+                  example: '1'
+                cargo_type_code:
+                  type: string
+                  description: Код характера груза
+                  example: '01'
+                currency_code:
+                  type: string
+                  description: Валюта результата расчета
+                  example: &id002
+                  - KZT
+                  - RUB
+              required:
+              - city_pickup_code
+              - city_delivery_code
+              - declared_price
+              - confirmation_price
+              - post_type
+              - insurance
+              - insurance_agent_code
+              - have_doc
+            example:
+              city_pickup_code: '660000100000'
+              city_delivery_code: '770000000000'
+              service: *id001
+              declared_price: '6000'
+              post_type: '02'
+              currency_code: *id002
+              insurance: '1'
+              insurance_agent_code: '8000152423'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - S:
+                  cost: 4284
+                  name: Посылка S
+                  time: 3
+                  detail:
+                  - code: S031
+                    name: Возмещение страхования груза по дейст.ст
+                    price: 204
+                  - code: S089
+                    name: ЗТТ (сборный паллетный борт)
+                    price: 2040
+                  - code: S039
+                    name: Груз
+                    price: 2040
+                  currency_code: KZT
+              - S:
+                  cost: 630
+                  name: Посылка S
+                  time: 3
+                  detail:
+                  - code: S031
+                    name: Возмещение страхования груза по дейст.ст
+                    price: 30
+                  - code: S089
+                    name: ЗТТ (сборный паллетный борт)
+                    price: 300
+                  - code: S039
+                    name: Груз
+                    price: 300
+                  currency_code: RUB
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    S:
+                      type: object
+                      properties:
+                        cost:
+                          type: integer
+                        name:
+                          type: string
+                        time:
+                          type: integer
+                        detail:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              name:
+                                type: string
+                              price:
+                                type: integer
+                        currency_code:
+                          type: string
   /1.0/order/cargo-type/get-list:
     get:
-      summary: "Список типов груза"
+      summary: Список типов груза
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - code: Z01
+                name: Авто/мото/вело техника
+              - code: Z02
+                name: Автозапчасти
+              - code: Z03
+                name: Автозапчасти кузовные
+              - code: Z04
+                name: Автомобильные стекла
+              - code: Z05
+                name: Автохимия
+              - code: Z06
+                name: Аккумуляторы не заряженные
+              - code: Z07
+                name: Бытовая техника
+              - code: Z08
+                name: Двери
+              - code: Z09
+                name: Диски, колеса в сборе
+              - code: Z10
+                name: Зоотовары
+              - code: Z11
+                name: Игрушки
+              - code: Z12
+                name: Изделия из камня, столешницы
+              - code: Z13
+                name: Инструменты
+              - code: Z14
+                name: Канцелярские товары, сувениры
+              - code: Z15
+                name: Катушка с кабелем, тросом
+              - code: Z16
+                name: Кафельная плитка, керамика
+              - code: Z17
+                name: Косметика, бытовая химия
+              - code: Z18
+                name: Краски, лаки, масла
+              - code: Z19
+                name: Личные вещи
+              - code: Z20
+                name: Матрасы
+              - code: Z21
+                name: Мебель и предметы интерьера
+              - code: Z22
+                name: Медицинские товары
+              - code: Z23
+                name: Металлопрокат (изделия из металла), трубы
+              - code: Z24
+                name: Музыкальные инструменты
+              - code: Z25
+                name: Оборудование (промышленное, медицинское, сварочное, торговое,
+                  выставочное итд)
+              - code: Z26
+                name: Огнетушители, баллоны
+              - code: Z27
+                name: Одежда, обувь
+              - code: Z28
+                name: Оргтехника, компьютеры, планшеты, смартфоны ит.д.
+              - code: Z29
+                name: Пластиковые изделия, емкости, бочки любого объема
+              - code: Z30
+                name: Полиграфия, печатная, рекламная продукция
+              - code: Z31
+                name: Посуда
+              - code: Z32
+                name: Резинотехн. изделия (РТИ), пожарные шланги
+              - code: Z33
+                name: Продукты питания, пищевые добавки
+              - code: Z34
+                name: Сантехника
+              - code: Z35
+                name: Спорттовары, инвентарь, тренажеры, туристические товары
+              - code: Z36
+                name: Стекло листовое/ пластик листовой
+              - code: Z37
+                name: Стеклопакеты
+              - code: Z38
+                name: Строительные товары, цемент, смеси, крепеж, скобяные изделия
+                  и т.д.
+              - code: Z39
+                name: Текстиль, рулоны ткани, ковры
+              - code: Z40
+                name: Хоз. товары
+              - code: Z41
+                name: Шины
+              - code: Z42
+                name: Документы
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    name:
+                      type: string
   /1.0/order/currency/get-list:
     get:
-      summary: "Список валют"
+      summary: Список валют
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - code: RUB
+                name: Российский Рубль
+                short_name: руб.
+                country_code: RU
+              - code: KZT
+                name: Казахстанский тенге
+                short_name: тенге
+                country_code: KZ
+              - code: BYN
+                name: Белорусский Рубль
+                short_name: бел. руб.
+                country_code: BY
+              - code: AMD
+                name: Армянский драм
+                short_name: драм
+                country_code: AM
+              - code: KGS
+                name: Киргизский сом
+                short_name: сом
+                country_code: KG
+              - code: RUB
+                name: Российский Рубль
+                short_name: руб.
+                country_code: AB
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    name:
+                      type: string
+                    short_name:
+                      type: string
+                    country_code:
+                      type: string
   /1.0/order/document/get:
     get:
-      summary: "Получить документ по заказу"
+      summary: Получить документ по заказу
+      parameters:
+      - name: sale_number
+        in: query
+        schema:
+          type: string
+        description: номер груза
+        example: '1105876644'
+      - name: type_code
+        in: query
+        schema:
+          type: integer
+        description: Тип документа
+        example: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - data: 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
+                name: Экспедиторская расписка
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    data:
+                      type: string
+                    name:
+                      type: string
   /1.0/order/get:
     get:
-      summary: "Получить информацию о заказе"
+      summary: Получить информацию о заказе
+      parameters:
+      - name: sale_number
+        in: query
+        schema:
+          type: string
+        description: номер груза
+        example: '1105871333'
+      - name: profile_id
+        in: query
+        schema:
+          type: integer
+        description: id профиля
+        example: '1'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                to:
+                  code: '660000100000'
+                  name: Екатеринбург
+                  type: Город
+                from:
+                  code: '720000200000'
+                  name: Тобольск
+                  type: Город
+                total:
+                  nds: '0.0'
+                  price: '150.0'
+                  route: Тобольск-Екатеринбург
+                  comment: ''
+                  cargo_number: ТБЛЕКБ0051237634
+                sender:
+                  inn: '6671271218'
+                  kpp: '667101001'
+                  name: ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ ТРАНСПОРТНАЯ КОМПАНИЯ
+                    "GTD"
+                  phone: '+773478370109'
+                  status: '1'
+                  debitor: '0001011311'
+                  short_name: ООО ТК "GTD"
+                  legal_address: '-'
+                  actual_address: '-'
+                status:
+                - code: '00'
+                  date: '2018-01-09'
+                  name: Новый заказ
+                  time: '16:02:33'
+                - code: '01'
+                  date: '2018-01-09'
+                  name: Груз принят
+                  time: '16:39:06'
+                - code: '02'
+                  date: '2018-01-10'
+                  name: Отправлен
+                  time: '14:29:11'
+                - code: '03'
+                  date: '2018-01-11'
+                  name: Прибыл
+                  time: '11:14:06'
+                payment:
+                  code: '2'
+                  name: Не оплачено
+                service:
+                - nds: '0.00'
+                  name: 'Перевозка груза: Тобольск-Екатеринбург'
+                  price: '150.0'
+                  quantity: '1.0'
+                  currency_code: RUB
+                  payer_debitor: '0001011311'
+                  payer_short_name: ООО ТК "GTD"
+                customer:
+                  inn: '6671271218'
+                  kpp: '667101001'
+                  name: ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ ТРАНСПОРТНАЯ КОМПАНИЯ
+                    "GTD"
+                  phone: '+77347777777'
+                  status: '1'
+                  debitor: '0001011311'
+                  short_name: ООО ТК "GTD"
+                  legal_address: '-'
+                  actual_address: '-'
+                recipient:
+                  inn: '6671271218'
+                  kpp: '667101001'
+                  name: ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ ТРАНСПОРТНАЯ КОМПАНИЯ
+                    "GTD"
+                  phone: '+773478370109'
+                  status: '1'
+                  debitor: '0001011311'
+                  short_name: ООО ТК "GTD"
+                  legal_address: '-'
+                  actual_address: '-'
+                contact_to:
+                  name: Гульнара
+                  phone: '73478370109'
+                  locality: г.Екатеринбург
+                  time_work: ''
+                about_cargo:
+                  places: '1.0'
+                  volume: '0.001'
+                  weight: '1.0'
+                  volume_unit: куб.м.
+                  weight_unit: кг
+                contact_from:
+                  name: Гульнара
+                  phone: '73478370109'
+                  locality: г.Тобольск
+                  time_work: ''
+                pickup_address: Промкомзона №3
+                delivery_address: ул 8 Марта, дом № 269
+              schema:
+                type: object
+                properties:
+                  to:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      name:
+                        type: string
+                      type:
+                        type: string
+                  from:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      name:
+                        type: string
+                      type:
+                        type: string
+                  total:
+                    type: object
+                    properties:
+                      nds:
+                        type: string
+                      price:
+                        type: string
+                      route:
+                        type: string
+                      comment:
+                        type: string
+                      cargo_number:
+                        type: string
+                  sender:
+                    type: object
+                    properties:
+                      inn:
+                        type: string
+                      kpp:
+                        type: string
+                      name:
+                        type: string
+                      phone:
+                        type: string
+                      status:
+                        type: string
+                      debitor:
+                        type: string
+                      short_name:
+                        type: string
+                      legal_address:
+                        type: string
+                      actual_address:
+                        type: string
+                  status:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        date:
+                          type: string
+                        name:
+                          type: string
+                        time:
+                          type: string
+                  payment:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      name:
+                        type: string
+                  service:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        nds:
+                          type: string
+                        name:
+                          type: string
+                        price:
+                          type: string
+                        quantity:
+                          type: string
+                        currency_code:
+                          type: string
+                        payer_debitor:
+                          type: string
+                        payer_short_name:
+                          type: string
+                  customer:
+                    type: object
+                    properties:
+                      inn:
+                        type: string
+                      kpp:
+                        type: string
+                      name:
+                        type: string
+                      phone:
+                        type: string
+                      status:
+                        type: string
+                      debitor:
+                        type: string
+                      short_name:
+                        type: string
+                      legal_address:
+                        type: string
+                      actual_address:
+                        type: string
+                  recipient:
+                    type: object
+                    properties:
+                      inn:
+                        type: string
+                      kpp:
+                        type: string
+                      name:
+                        type: string
+                      phone:
+                        type: string
+                      status:
+                        type: string
+                      debitor:
+                        type: string
+                      short_name:
+                        type: string
+                      legal_address:
+                        type: string
+                      actual_address:
+                        type: string
+                  contact_to:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      phone:
+                        type: string
+                      locality:
+                        type: string
+                      time_work:
+                        type: string
+                  about_cargo:
+                    type: object
+                    properties:
+                      places:
+                        type: string
+                      volume:
+                        type: string
+                      weight:
+                        type: string
+                      volume_unit:
+                        type: string
+                      weight_unit:
+                        type: string
+                  contact_from:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      phone:
+                        type: string
+                      locality:
+                        type: string
+                      time_work:
+                        type: string
+                  pickup_address:
+                    type: string
+                  delivery_address:
+                    type: string
   /1.0/order/get-list:
     get:
-      summary: "Список заказов"
+      summary: Список заказов
+      parameters:
+      - name: date_start
+        in: query
+        schema:
+          type: string
+        description: Дата начала диапозона
+        example: '2018-04-01'
+        required: true
+      - name: date_end
+        in: query
+        schema:
+          type: string
+        description: Дата завершение диапозона
+        example: '2018-06-30'
+        required: true
+      - name: limit
+        in: query
+        schema:
+          type: integer
+        description: Количество записей
+        example: '10'
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        description: смещение
+        example: '10'
+      - name: profile_id
+        in: query
+        schema:
+          type: integer
+        description: id профиля
+        example: '1'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - to:
+                  code: '660000100000'
+                  name: Екатеринбург
+                  type: Город
+                  region_code: '66'
+                  country_code: RU
+                date: '2018-04-09'
+                from:
+                  code: '720000200000'
+                  name: Тобольск
+                  type: Город
+                  region_code: '72'
+                  country_code: RU
+                time: 00:00:00
+                price: '150.0'
+                sender:
+                  debitor: '0001011311'
+                  short_name: ООО ТК "КИТ"
+                status:
+                - code: '00'
+                  date: '2018-04-09'
+                  name: Новый заказ
+                  time: 09:56:57
+                - code: '01'
+                  date: '2018-04-09'
+                  name: Груз принят
+                  time: '12:04:49'
+                - code: '02'
+                  date: '2018-04-09'
+                  name: Отправлен
+                  time: '12:46:45'
+                - code: '03'
+                  date: '2018-04-10'
+                  name: Прибыл
+                  time: 09:39:37
+                payment:
+                  code: '2'
+                  name: Выставлен
+                customer:
+                  debitor: '0001011311'
+                  short_name: ООО ТК "КИТ"
+                recipient:
+                  debitor: '0001011311'
+                  short_name: ООО ТК "КИТ"
+                sale_number: 6171781901
+                cargo_number: XXXXXX0062074336
+                currency_code: RUB
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    to:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          type: string
+                        region_code:
+                          type: string
+                        country_code:
+                          type: string
+                    date:
+                      type: string
+                    from:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          type: string
+                        region_code:
+                          type: string
+                        country_code:
+                          type: string
+                    time:
+                      type: string
+                    price:
+                      type: string
+                    sender:
+                      type: object
+                      properties:
+                        debitor:
+                          type: string
+                        short_name:
+                          type: string
+                    status:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                          date:
+                            type: string
+                          name:
+                            type: string
+                          time:
+                            type: string
+                    payment:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        name:
+                          type: string
+                    customer:
+                      type: object
+                      properties:
+                        debitor:
+                          type: string
+                        short_name:
+                          type: string
+                    recipient:
+                      type: object
+                      properties:
+                        debitor:
+                          type: string
+                        short_name:
+                          type: string
+                    sale_number:
+                      type: integer
+                    cargo_number:
+                      type: string
+                    currency_code:
+                      type: string
   /1.0/order/mass-create:
     post:
-      summary: "Массовое создание заказов"
+      summary: Массовое создание заказов
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                profile_id:
+                  type: integer
+                  description: id профиля
+                  example: 181048
+                file:
+                  type: string
+                  description: Файл
+                  example: massload_template.xlsx
+              required:
+              - profile_id
+              - file
+            example:
+              profile_id: 181048
+              file: massload_template.xlsx
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                message: []
+                row_number: 3
+                sale_number: 1105891318
+                cargo_number: ЕКБМСК0100010832
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: array
+                  row_number:
+                    type: integer
+                  sale_number:
+                    type: integer
+                  cargo_number:
+                    type: string
   /1.0/order/photo/get:
     get:
-      summary: "Получить фотографии заказа"
+      summary: Получить фотографии заказа
+      parameters:
+      - name: sale_number
+        in: query
+        schema:
+          type: string
+        description: номер груза
+        example: '1105876644'
+      - name: type
+        in: query
+        schema:
+          type: integer
+        description: Тип фото
+        example: 1
+      - name: profile_id
+        in: query
+        schema:
+          type: integer
+        description: id профиля
+        example: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - data: 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
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    data:
+                      type: string
   /1.0/order/service/get-list:
     get:
-      summary: "Список услуг"
+      summary: Список услуг
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - code: S026
+                name: Мешок S
+              - code: T001
+                name: Жесткая доупаковка груза
+              - code: T002
+                name: Паллетирование (прозр. пленка)
+              - code: T003
+                name: Паллетирование (черн. пленка)
+              - code: S082
+                name: Растентовка при доставке
+              - code: S083
+                name: Растентовка при заборе
+              - code: S089
+                name: Упаковка в ПБ (СБОР)
+              - code: S109
+                name: Упаковка в воздушно-пузырьковую пленку
+              - code: S037
+                name: Стрейчевание
+              - code: S087
+                name: Упаковка в секьюрити пак
+              - code: S036
+                name: Предоставление поддона
+              - code: S072
+                name: Подтверждение получения груза
+              - code: S119
+                name: Мешок М
+              - code: S120
+                name: Мешок L
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    name:
+                      type: string
   /1.0/order/status/get:
     get:
-      summary: "Статус заказа"
+      summary: Статус заказа
+      parameters:
+      - name: cargo_number
+        in: query
+        schema:
+          type: string
+        description: номер груза
+        example: ТБЛЕКБ0010000111
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                to: '720000100000'
+                from: '660000100000'
+                phone:
+                - '+73432789630'
+                - '+78002345650'
+                notice: Можно получить c 2013-10-11
+                status:
+                - code: '00'
+                  date: '2013-10-04'
+                  name: Новый заказ
+                  time: 08:24:35
+                - code: '01'
+                  date: '2013-10-08'
+                  name: Груз принят
+                  time: 04:52:11
+                - code: '03'
+                  date: '2013-10-11'
+                  name: Прибыл
+                  time: 08:42:28
+                - code: '04'
+                  date: '2013-10-12'
+                  name: Выдан
+                  time: '13:04:20'
+                - code: '04'
+                  date: '2013-10-12'
+                  name: Выдан
+                  time: '13:04:20'
+                address: Город Екатеринбург, Улица Маневровая, д. 41
+                schedule: ПН-ПТ 9:00-19:00, СБ 10:00-15:00
+              schema:
+                type: object
+                properties:
+                  to:
+                    type: string
+                  from:
+                    type: string
+                  phone:
+                    type: array
+                    items:
+                      type: string
+                  notice:
+                    type: string
+                  status:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        date:
+                          type: string
+                        name:
+                          type: string
+                        time:
+                          type: string
+                  address:
+                    type: string
+                  schedule:
+                    type: string
   /1.0/order/time-delivery:
     get:
-      summary: "Сроки доставки"
+      summary: Сроки доставки
+      parameters:
+      - name: adress_id_from
+        in: query
+        schema:
+          type: string
+        description: Код адреса откуда
+        example: '518'
+        required: true
+      - name: adress_id_to
+        in: query
+        schema:
+          type: string
+        description: Код адреса куда
+        example: '733'
+        required: true
+      - name: timestamp
+        in: query
+        schema:
+          type: string
+        description: Дата и время сдачи груза
+        example: '2022-09-15 15:02:00'
+        required: true
+      - name: hardpack
+        in: query
+        schema:
+          type: boolean
+        description: Наличие жесткой упаковки (да - 1, нет - 0)
+        example: '0'
+      - name: pickup
+        in: query
+        schema:
+          type: boolean
+        description: Забор груза (да - 1, нет - 0)
+        example: '0'
+      - name: delivery
+        in: query
+        schema:
+          type: boolean
+        description: Услуга доставки (да - 1, нет - 0)
+        example: '0'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                date: '2022-09-26'
+                days: 10
+                time: 09:00
+                status: 1
+                message: ''
+                timestamp_result: '20220926090000'
+              schema:
+                type: object
+                properties:
+                  date:
+                    type: string
+                  days:
+                    type: integer
+                  time:
+                    type: string
+                  status:
+                    type: integer
+                  message:
+                    type: string
+                  timestamp_result:
+                    type: string
   /1.1/order/create-post:
     post:
-      summary: "Создание посылки (v1.1)"
+      summary: Создание посылки (v1.1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                city_pickup_code:
+                  type: string
+                  description: Код города откуда
+                  example: '660000100000'
+                city_delivery_code:
+                  type: string
+                  description: Код города куда
+                  example: '000000000001'
+                customer:
+                  type: string
+                  description: Заказчик
+                sender:
+                  type: string
+                  description: Отправитель
+                receiver:
+                  type: string
+                  description: Получатель
+                type:
+                  type: integer
+                  description: Вид перевозки
+                  example: '01'
+                cargo_type:
+                  type: string
+                  description: Код характера груза (перечень /1.0/order/cargo-type/get-list)
+                  example: Z01
+                declared_price:
+                  type: integer
+                  description: Объявленная стоимость груза (руб)
+                  example: '1000'
+                confirmation_price:
+                  type: boolean
+                  description: Наличие документов подтверждающих стоимость
+                  example: '1'
+                service:
+                  type: string
+                  description: массив кодов услуг
+                  example: '[service][0] = S089'
+                type_post:
+                  type: string
+                  description: тип посылки
+                  example: post_type = 02
+                additional_payment_shipping:
+                  type: string
+                  description: Плательщик перевозки
+                  example: SE
+                additional_payment_pickup:
+                  type: string
+                  description: Плательщик забора груза
+                  example: SE
+                additional_payment_delivery:
+                  type: string
+                  description: Плательщик доставки груза
+                  example: SE
+                insurance:
+                  type: integer
+                  description: Услуга страхования груза
+                  example: '1'
+                insurance_agent_code:
+                  type: string
+                  description: Код страхового агента
+                  example: '8000152423'
+                have_doc:
+                  type: integer
+                  description: Есть документы подтверждающие стоимость груза
+                  example: '1'
+                currency_code:
+                  type: string
+                  description: Валюта результата расчета
+                  example: currency_code[0] = KZTcurrency_code[1] = RUB
+                result:
+                  type: object
+                  example: &id003
+                    sale_number: 1105887652
+                    cargo_number: ЕКБМСК0100007251
+                status:
+                  type: integer
+                  example: 1
+                message:
+                  type: string
+                  example: Спасибо. Скоро с Вами свяжется наш оператор.
+              required:
+              - city_pickup_code
+              - city_delivery_code
+              - customer
+              - sender
+              - receiver
+              - cargo_type
+              - declared_price
+              - confirmation_price
+              - type_post
+              - insurance
+              - insurance_agent_code
+              - have_doc
+            example:
+              result: *id003
+              status: 1
+              message: Спасибо. Скоро с Вами свяжется наш оператор.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                result:
+                  sale_number: 1105887652
+                  cargo_number: ЕКБМСК0100007251
+                status: 1
+                message: Спасибо. Скоро с Вами свяжется наш оператор.
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      sale_number:
+                        type: integer
+                      cargo_number:
+                        type: string
+                  status:
+                    type: integer
+                  message:
+                    type: string
   /1.1/order/time-delivery:
     get:
-      summary: "Сроки доставки (v1.1)"
+      summary: Сроки доставки (v1.1)
+      parameters:
+      - name: city_pickup_code
+        in: query
+        schema:
+          type: string
+        description: Код города откуда
+        example: '910000900000'
+        required: true
+      - name: city_delivery_code
+        in: query
+        schema:
+          type: string
+        description: Код города куда
+        example: '660002900000'
+        required: true
+      - name: adress_id_from
+        in: query
+        schema:
+          type: string
+        description: Код адреса откуда
+        example: '518'
+        required: true
+      - name: adress_id_to
+        in: query
+        schema:
+          type: string
+        description: Код адреса куда
+        example: '733'
+        required: true
+      - name: timestamp
+        in: query
+        schema:
+          type: string
+        description: Дата и время сдачи груза
+        example: '2022-09-15 15:02:00'
+        required: true
+      - name: hardpack
+        in: query
+        schema:
+          type: boolean
+        description: Наличие жесткой упаковки (да - 1, нет - 0)
+        example: '0'
+      - name: pickup
+        in: query
+        schema:
+          type: boolean
+        description: Забор груза (да - 1, нет - 0)
+        example: '0'
+      - name: delivery
+        in: query
+        schema:
+          type: boolean
+        description: Услуга доставки (да - 1, нет - 0)
+        example: '0'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                date: '2022-09-24'
+                days: 8
+                time: '20:00'
+                status: 1
+                message: ''
+                timestamp_result: '20220924200000'
+              schema:
+                type: object
+                properties:
+                  date:
+                    type: string
+                  days:
+                    type: integer
+                  time:
+                    type: string
+                  status:
+                    type: integer
+                  message:
+                    type: string
+                  timestamp_result:
+                    type: string
   /1.4/order/create:
     post:
-      summary: "Создание заказа (v1.4)"
+      summary: Создание заказа (v1.4)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                city_pickup_code:
+                  type: string
+                  description: Код города откуда
+                  example: '771100000600'
+                city_delivery_code:
+                  type: string
+                  description: Код города куда
+                  example: '660000100000'
+                pickpoint_address_code:
+                  type: string
+                  description: Код терминала получения
+                  example: ''
+                customer:
+                  type: string
+                  description: Заказчик
+                  example: &id009
+                    debitor_type: '1'
+                    real_contact_name: Фамилия Имя Отчество
+                    real_contact_phone: '+79999999999'
+                    country_code: RU
+                sender:
+                  type: string
+                  description: Отправитель
+                  example: &id010
+                    debitor_type: '1'
+                    real_contact_name: Фамилия Имя Отчество
+                    real_contact_phone: '+79999999999'
+                    country_code: RU
+                receiver:
+                  type: string
+                  description: Получатель
+                  example: &id011
+                    debitor_type: '1'
+                    real_contact_name: Фамилия Имя Отчество
+                    real_contact_phone: '+79999999999'
+                    country_code: RU
+                type:
+                  type: integer
+                  description: Вид перевозки
+                  example: '01'
+                declared_price:
+                  type: integer
+                  description: Объявленная стоимость груза (руб)
+                  example: '100'
+                confirmation_price:
+                  type: boolean
+                  description: Наличие документов подтверждающих стоимость
+                  example: '1'
+                inner_track_number:
+                  type: string
+                  description: Внутренний трек-номер груза
+                  example: ''
+                service:
+                  type: string
+                  description: массив кодов услуг
+                  example: &id012 []
+                pick_up_prr:
+                  type: boolean
+                  description: Услуга ПРР при заборе груза
+                  example: 1
+                pick_up_prr_floor:
+                  type: integer
+                  description: Этаж подьема
+                  example: 9
+                pick_up_prr_distance:
+                  type: integer
+                  description: Метры переноса груза
+                  example: 7
+                pick_up_prr_freight_elevator:
+                  type: integer
+                  description: Наличие грузового лифта
+                  example: ''
+                delivery_prr:
+                  type: boolean
+                  description: Услуга ПРР при доставке
+                  example: '1'
+                delivery_prr_floor:
+                  type: integer
+                  description: Этаж подьема
+                  example: '4'
+                delivery_prr_distance:
+                  type: integer
+                  description: Метры переноса груза
+                  example: '4'
+                delivery_prr_freight_elevator:
+                  type: integer
+                  description: Наличие грузового лифта
+                  example: '1'
+                height:
+                  type: string
+                  description: Высота груза (см) позиции
+                  example: places[0][height] = 100places[1][height]  = 120
+                width:
+                  type: string
+                  description: Ширина груза (см) позиции
+                  example: places[0][width] = 100places[1][width] = 120
+                length:
+                  type: string
+                  description: Длина груза (см) позиции
+                  example: places[0][length] = 100places[1][length] = 120
+                count_place:
+                  type: integer
+                  description: Количество мест в позиции
+                  example: places[0][count_place] = 1places[1][count_place] = 2
+                weight:
+                  type: integer
+                  description: Масса КГ позиции
+                  example: places[0][weight] = 2places[1][weight] = 4
+                volume:
+                  type: array
+                  description: Объем М³ позиции
+                  example: places[1][volume] = 1places[0][volume] = 2
+                cargo_type_code:
+                  type: string
+                  description: Код характера груза (перечень /1.0/order/cargo-type/get-list)
+                  example: places[1][cargo_type_code] = "Z11"places[0][cargo_type_code]
+                    = "Z01"
+                pick_up:
+                  type: integer
+                  description: Забор груза
+                  example: '1'
+                pickup_date:
+                  type: string
+                  description: Дата забора
+                  example: '2025-07-14'
+                pickup_time_start:
+                  type: string
+                  description: Время начала забора
+                  example: '10:00'
+                pickup_time_end:
+                  type: string
+                  description: Время окончания забора
+                  example: '17:00'
+                pickup_comment:
+                  type: string
+                  description: Комментарий к забору груза
+                  example: ''
+                pickup_r:
+                  type: integer
+                  description: Забор с другого адреса отправителя
+                  example: '0'
+                pickup_street:
+                  type: string
+                  description: Улица другого адреса отправителя
+                  example: ''
+                pickup_house:
+                  type: string
+                  description: Дом другого адреса отправителя
+                  example: ''
+                pickup_supp:
+                  type: string
+                  description: Корпус другого адреса отправителя
+                  example: ''
+                pickup_room:
+                  type: string
+                  description: Офис/кварира другого адреса отправителя
+                  example: ''
+                deliver:
+                  type: integer
+                  description: Доставка груза по городу
+                  example: 0
+                delivery_date:
+                  type: string
+                  description: Дата доставки
+                  example: '2025-07-14'
+                delivery_time_start:
+                  type: string
+                  description: Время начала доставки
+                  example: '10:00'
+                delivery_time_end:
+                  type: string
+                  description: Время окончания доставки
+                  example: '17:00'
+                delivery_comment:
+                  type: string
+                  description: Комментарий к доставке
+                  example: ''
+                delivery_r:
+                  type: integer
+                  description: Доставка на другой адрес получателя
+                  example: '0'
+                delivery_street:
+                  type: string
+                  description: Улица другого адреса получателя
+                  example: ''
+                delivery_house:
+                  type: string
+                  description: Дом другого адреса получателя
+                  example: ''
+                delivery_supp:
+                  type: string
+                  description: Корпус другого адреса получателя
+                  example: ''
+                delivery_room:
+                  type: string
+                  description: Офис/кварира другого адреса получателя
+                  example: ''
+                additional_payment_shipping:
+                  type: string
+                  description: Плательщик перевозки
+                  example: SE
+                additional_payment_pickup:
+                  type: string
+                  description: Плательщик забора груза
+                  example: SE
+                additional_payment_delivery:
+                  type: string
+                  description: Плательщик доставки груза
+                  example: SE
+                insurance:
+                  type: integer
+                  description: Услуга страхования груза
+                  example: 0
+                insurance_agent_code:
+                  type: string
+                  description: Код страхового агента
+                  example: '8000152423'
+                currency_code:
+                  type: string
+                  description: Валюта результата расчета
+                  example: currency_code[0] = KZTcurrency_code[1] = RUB
+                all_places_same:
+                  type: boolean
+                  description: Все места одинаковы по размеру
+                  example: '0'
+                comment:
+                  type: string
+                  description: Комментарий
+                  example: ''
+                document_type:
+                  type: string
+                  description: Массив типов документов
+                  example: &id005
+                  - '04'
+                document_number:
+                  type: string
+                  description: Массив номеров документов
+                  example: &id006
+                  - '1'
+                document_date:
+                  type: string
+                  description: Массив дат документов
+                  example: &id007
+                  - '2025-07-14'
+                document_file:
+                  type: string
+                  description: Массив файлов документов
+                  example: &id008 []
+                dispatch_address_code:
+                  type: string
+                  example: ''
+                places:
+                  type: array
+                  example: &id004
+                  - volume: '0.025'
+                    weight: '80'
+                    count_place: '1'
+                    length: '250'
+                    height: '10'
+                    width: '10'
+                    service:
+                    - T001
+                    cargo_type: Z32
+                real_city:
+                  type: string
+                  example: ''
+                real_country:
+                  type: string
+                  example: ''
+                real_street:
+                  type: string
+                  example: ''
+                real_house:
+                  type: string
+                  example: ''
+                seal:
+                  type: string
+                  example: '0'
+                pre_packaging:
+                  type: string
+                  example: '0'
+                palletizing_transparent:
+                  type: string
+                  example: '0'
+                palletizing_tint:
+                  type: string
+                  example: '0'
+                restruct_deliv:
+                  type: string
+                  example: '0'
+                restruct_pickup:
+                  type: string
+                  example: '0'
+                palleting:
+                  type: string
+                  example: '0'
+                additional_payment_shipping_email:
+                  type: string
+                  example: ''
+                additional_payment_pickup_email:
+                  type: string
+                  example: ''
+                additional_payment_delivery_email:
+                  type: string
+                  example: ''
+              required:
+              - city_pickup_code
+              - city_delivery_code
+              - customer
+              - sender
+              - receiver
+              - declared_price
+              - confirmation_price
+              - height
+              - width
+              - length
+              - count_place
+              - weight
+              - volume
+              - cargo_type_code
+              - pickup_date
+              - pickup_time_start
+              - pickup_time_end
+              - pickup_street
+              - pickup_house
+              - delivery_date
+              - delivery_time_start
+              - delivery_time_end
+              - delivery_street
+              - delivery_house
+              - insurance
+              - insurance_agent_code
+            example:
+              inner_track_number: ''
+              city_pickup_code: '771100000600'
+              city_delivery_code: '660000100000'
+              dispatch_address_code: ''
+              pick_up_prr: 1
+              pick_up_prr_floor: 9
+              pick_up_prr_distance: 7
+              pick_up_prr_freight_elevator: ''
+              places: *id004
+              document_type: *id005
+              document_number: *id006
+              document_date: *id007
+              document_file: *id008
+              comment: ''
+              deliver: 0
+              delivery_comment: ''
+              delivery_date: '2025-07-14'
+              delivery_time_start: '10:00'
+              delivery_time_end: '17:00'
+              delivery_r: '0'
+              delivery_street: ''
+              delivery_house: ''
+              delivery_supp: ''
+              delivery_room: ''
+              real_city: ''
+              real_country: ''
+              real_street: ''
+              real_house: ''
+              pick_up: '1'
+              pickup_date: '2025-07-14'
+              pickup_time_start: '10:00'
+              pickup_time_end: '17:00'
+              pickup_comment: ''
+              pickup_r: '0'
+              pickup_street: ''
+              pickup_house: ''
+              pickup_supp: ''
+              pickup_room: ''
+              customer: *id009
+              sender: *id010
+              receiver: *id011
+              type: '01'
+              declared_price: '100'
+              all_places_same: '0'
+              confirmation_price: '1'
+              service: *id012
+              insurance: 0
+              insurance_agent_code: '8000152423'
+              seal: '0'
+              pre_packaging: '0'
+              palletizing_transparent: '0'
+              palletizing_tint: '0'
+              restruct_deliv: '0'
+              restruct_pickup: '0'
+              palleting: '0'
+              additional_payment_shipping: SE
+              additional_payment_pickup: SE
+              additional_payment_delivery: SE
+              additional_payment_shipping_email: ''
+              additional_payment_pickup_email: ''
+              additional_payment_delivery_email: ''
+              pickpoint_address_code: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                result:
+                  sale_number: 3105877041
+                  cargo_number: ТЮМРАД0200013090
+                status: 1
+                message: Спасибо. Скоро с Вами свяжется наш оператор.
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      sale_number:
+                        type: integer
+                      cargo_number:
+                        type: string
+                  status:
+                    type: integer
+                  message:
+                    type: string
   /2.0/order/calculate:
     post:
-      summary: "Расчет стоимости (v2.0)"
+      summary: Расчет стоимости (v2.0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                city_pickup_code:
+                  type: string
+                  description: Код города откуда
+                  example: '660000100000'
+                city_delivery_code:
+                  type: string
+                  description: Код города куда
+                  example: '770000000000'
+                dispatch_address_code:
+                  type: string
+                  description: Код склада откуда
+                  example: '6601'
+                pickpoint_address_code:
+                  type: string
+                  description: Код склада куда
+                  example: '7701'
+                declared_price:
+                  type: integer
+                  description: Объявленная стоимость груза (руб)
+                  example: 100
+                confirmation_price:
+                  type: boolean
+                  description: Наличие документов подтверждающих стоимость
+                  example: '1'
+                pick_up_prr:
+                  type: boolean
+                  description: Услуга ПРР при заборе груза
+                  example: '1'
+                pick_up_prr_floor:
+                  type: integer
+                  description: Этаж подъема
+                  example: '4'
+                pick_up_prr_distance:
+                  type: integer
+                  description: Метры переноса груза
+                  example: '4'
+                pick_up_prr_freight_elevator:
+                  type: integer
+                  description: Наличие грузового лифта
+                  example: '1'
+                delivery_prr:
+                  type: boolean
+                  description: Услуга ПРР при доставке
+                  example: '1'
+                delivery_prr_floor:
+                  type: integer
+                  description: Этаж подъема
+                  example: '4'
+                delivery_prr_distance:
+                  type: integer
+                  description: Метры переноса груза
+                  example: '4'
+                delivery_prr_freight_elevator:
+                  type: integer
+                  description: Наличие грузового лифта
+                  example: '1'
+                customer:
+                  type: integer
+                  description: Заказчик
+                  example: &id015
+                    debitor: '0001011311'
+                sender:
+                  type: integer
+                  description: Отправитель
+                  example: &id013
+                    debitor: '0001011311'
+                receiver:
+                  type: integer
+                  description: Получатель
+                  example: &id014
+                    debitor: '0001011311'
+                type:
+                  type: string
+                  description: Тип перевозки
+                  example: '01'
+                service:
+                  type: array
+                  description: массив кодов услуг
+                  example: places[0]service[0] = T001places[0]service[1] = S026
+                height:
+                  type: string
+                  description: Высота груза (см) позиции
+                  example: places[0][height] = 100places[1][height]  = 120
+                width:
+                  type: string
+                  description: Ширина груза (см) позиции
+                  example: places[0][width] = 100places[1][width] = 120
+                length:
+                  type: string
+                  description: Длина груза (см) позиции
+                  example: places[0][length] = 100places[1][length] = 120
+                volume:
+                  type: array
+                  description: Объем М³ позиции
+                  example: places[1][volume] = 1places[0][volume] = 2
+                weight:
+                  type: string
+                  description: Масса КГ позиции
+                  example: places[0][weight] = 2places[1][weight] = 0.4
+                pick_up:
+                  type: integer
+                  description: Забор груза по городу
+                  example: '1'
+                delivery:
+                  type: integer
+                  description: Доставка груза по городу
+                  example: '1'
+                have_doc:
+                  type: integer
+                  description: Есть документы подтверждающие стоимость груза
+                  example: '1'
+                cargo_type_code:
+                  type: string
+                  description: Код характера груза
+                  example: '01'
+                additional_payment_shipping:
+                  type: string
+                  description: Код плательщика перевозки груза (AG - заказчик, SE
+                    - отправитель, WE - получатель)
+                  example: AG
+                additional_payment_pickup:
+                  type: string
+                  description: Код плательщика забора груза с адреса (AG - заказчик,
+                    SE - отправитель, WE - получатель)
+                  example: SE
+                additional_payment_delivery:
+                  type: string
+                  description: Код плательщика доставки груза на адрес (AG - заказчик,
+                    SE - отправитель, WE - получатель)
+                  example: WE
+                currency_code:
+                  type: string
+                  description: Валюта результата расчета
+                  example: currency_code[0] = KZTcurrency_code[1] = RUB
+                all_places_same:
+                  type: boolean
+                  description: Все места одинаковы по размеру
+                  example: '1'
+                places:
+                  type: array
+                  example: &id016
+                  - count_place: 1
+                    height: 100
+                    width: 100
+                    length: 100
+                    weight: 100
+                    service:
+                    - S026
+                    - T001
+                  - count_place: 4
+                    weight: 10
+                    volume: 4
+              required:
+              - city_pickup_code
+              - city_delivery_code
+              - declared_price
+              - confirmation_price
+              - type
+              - height
+              - width
+              - length
+              - volume
+              - weight
+              - have_doc
+            example:
+              city_pickup_code: '660000100000'
+              city_delivery_code: '770000000000'
+              dispatch_address_code: '6601'
+              pickpoint_address_code: '7701'
+              declared_price: 100
+              sender: *id013
+              receiver: *id014
+              customer: *id015
+              additional_payment_shipping: AG
+              additional_payment_pickup: SE
+              additional_payment_delivery: WE
+              type: '01'
+              places: *id016
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - '01':
+                  cost: 23348
+                  name: Стандарт
+                  time: 6
+                  detail:
+                  - code: S039
+                    name: Груз
+                    price: 21078
+                  - code: S026
+                    name: Мешок S
+                    price: 60
+                  - code: S025
+                    name: ЗТТ (деревянная обрешетка)
+                    price: 2100
+                  - code: S087
+                    name: Упаковка в секьюрити пак
+                    price: 50
+                  - code: S103
+                    name: Возмещение страхования груза по объяв.ст
+                    price: 60
+                  - code: S118
+                    name: Перевозка Екатеринбург-Сургут(Стандарт)
+                    price: 0
+                  messages_log: []
+                  currency_code: RUB
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '01':
+                      type: object
+                      properties:
+                        cost:
+                          type: integer
+                        name:
+                          type: string
+                        time:
+                          type: integer
+                        detail:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              name:
+                                type: string
+                              price:
+                                type: integer
+                        messages_log:
+                          type: array
+                        currency_code:
+                          type: string
   /1.0/tdd/city/get-list:
     get:
-      summary: "Список городов"
+      summary: Список городов
+      parameters:
+      - name: code
+        in: query
+        schema:
+          type: string
+        description: Код населенного пункта
+        example: '660002900000'
+      - name: region_code
+        in: query
+        schema:
+          type: string
+        description: Код региона
+        example: '66'
+      - name: country_code
+        in: query
+        schema:
+          type: string
+        description: Код страны
+        example: RU
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - code: '660002900000'
+                name: Ирбит
+                type: гор.
+                region_code: '66'
+                country_code: RU
+                required_pickup: 1
+                required_delivery: 1
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    region_code:
+                      type: string
+                    country_code:
+                      type: string
+                    required_pickup:
+                      type: integer
+                    required_delivery:
+                      type: integer
   /1.0/tdd/country/get-list:
     get:
-      summary: "Список стран"
+      summary: Список стран
+      parameters:
+      - name: code
+        in: query
+        schema:
+          type: string
+        example: RU
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - code: AB
+                name: Абхазия
+              - code: AM
+                name: Армения
+              - code: BY
+                name: Беларусь
+              - code: CN
+                name: Китай
+              - code: DE
+                name: Германия
+              - code: KG
+                name: Киргизия
+              - code: KZ
+                name: Казахстан
+              - code: RU
+                name: Россия
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    name:
+                      type: string
   /1.0/tdd/region/get-list:
     get:
-      summary: "Список регионов"
+      summary: Список регионов
+      parameters:
+      - name: code
+        in: query
+        schema:
+          type: string
+        description: Код населенного пункта
+        example: '66'
+      - name: country_сode
+        in: query
+        schema:
+          type: string
+        description: Код страны
+        example: RU
+      - name: country_code
+        in: query
+        schema:
+          type: string
+        example: RU
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - code: '66'
+                name: Свердловская обл.
+                country_code: RU
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    name:
+                      type: string
+                    country_code:
+                      type: string
   /1.0/tdd/search/by-name:
     post:
-      summary: "Поиск по наименованию"
+      summary: Поиск по наименованию
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Имя города
+                  example: Екатеринбург
+            example:
+              title: Екатеринбург
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - code: '660000100000'
+                name: Екатеринбург
+                type: гор.
+                region_code: '66'
+                country_code: RU
+                required_pickup: 0
+                required_delivery: 0
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    region_code:
+                      type: string
+                    country_code:
+                      type: string
+                    required_pickup:
+                      type: integer
+                    required_delivery:
+                      type: integer
   /1.0/tdd/search/code-city:
     post:
-      summary: "Поиск кода города"
+      summary: Поиск кода города
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code_city:
+                  type: string
+                  description: Код города
+                  example: '660003100000'
+                kladr:
+                  type: string
+                  description: КЛАДР города
+                  example: '6600003100000'
+              required:
+              - code_city
+              - kladr
+            example:
+              kladr: '6600003100000'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                code: '660003100000'
+                kladr: '6600003100000'
+                name_kladr: Красноуфимск
+                type_kladr: г
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  kladr:
+                    type: string
+                  name_kladr:
+                    type: string
+                  type_kladr:
+                    type: string
   /1.1/tdd/city/get-list:
     get:
-      summary: "Список городов (v1.1)"
+      summary: Список городов (v1.1)
+      parameters:
+      - name: code
+        in: query
+        schema:
+          type: string
+        description: Код населенного пункта
+        example: '660002900000'
+      - name: region_code
+        in: query
+        schema:
+          type: string
+        description: Код региона
+        example: '66'
+      - name: country_code
+        in: query
+        schema:
+          type: string
+        description: Код страны
+        example: RU
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - code: '660002900000'
+                name: Ирбит
+                type: гор.
+                kladr: '6600002900000'
+                region_code: '66'
+                country_code: RU
+                required_pickup: 1
+                required_delivery: 1
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    kladr:
+                      type: string
+                    region_code:
+                      type: string
+                    country_code:
+                      type: string
+                    required_pickup:
+                      type: integer
+                    required_delivery:
+                      type: integer
   /1.1/tdd/search/by-name:
     post:
-      summary: "Поиск по наименованию (v1.1)"
+      summary: Поиск по наименованию (v1.1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Имя города
+                  example: Ирбит
+            example:
+              title: Ирбит
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - code: '660002900000'
+                name: Ирбит
+                type: гор.
+                kladr: '6600002900000'
+                region_code: '66'
+                country_code: RU
+                required_pickup: 1
+                required_delivery: 1
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    kladr:
+                      type: string
+                    region_code:
+                      type: string
+                    country_code:
+                      type: string
+                    required_pickup:
+                      type: integer
+                    required_delivery:
+                      type: integer
   /1.0/profile/get-list:
     get:
-      summary: "Список профилей"
+      summary: Список профилей
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - id: 26794
+                name: ТРАНСПОРТНАЯ КОМПАНИЯ "GTD"
+                debitor: 0009999999
+              - id: 29696
+                name: ООО КАШАЛОТ
+                debitor: 0008888888
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    debitor:
+                      type: string
   /1.0/geography/address/get-list:
     get:
-      summary: "Список адресов"
+      summary: Список адресов
+      parameters:
+      - name: geography_city_id
+        in: query
+        schema:
+          type: integer
+        description: Код города географии
+        example: '699'
+      - name: withPhone
+        in: query
+        schema:
+          type: string
+        description: Вернуть результат с номерами телефонов
+        example: '1'
+      - name: withEmail
+        in: query
+        schema:
+          type: string
+        description: Вернуть результат с email
+        example: '1'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - id: '522'
+                lat: '50.579762'
+                lon: '36.633863'
+                email:
+                - value: belgorod1@gtdel.net
+                  comment: ''
+                  geography_address_id: '522'
+                phone:
+                - value: +7 (4722) 400-676
+                  comment: ''
+                  geography_address_id: '522'
+                - value: +7 (800) 234-56-50
+                  comment: Единая справочная служба
+                  geography_address_id: '522'
+                value: ул. Михайловское шоссе. д.23
+                geography_city_id: '699'
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    lat:
+                      type: string
+                    lon:
+                      type: string
+                    email:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          value:
+                            type: string
+                          comment:
+                            type: string
+                          geography_address_id:
+                            type: string
+                    phone:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          value:
+                            type: string
+                          comment:
+                            type: string
+                          geography_address_id:
+                            type: string
+                    value:
+                      type: string
+                    geography_city_id:
+                      type: string
   /1.0/geography/city/get-list:
     get:
-      summary: "Список городов географии"
+      summary: Список городов географии
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: integer
+        description: id города
+        example: '695'
+      - name: tdd_city_code
+        in: query
+        schema:
+          type: string
+        description: Код города
+        example: '910000900000'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - id: '695'
+                sxgeoCity:
+                  id: '713513'
+                  lat: '44.67631'
+                  lon: '34.40778'
+                sxgeo_city_id: '713513'
+                tdd_city_code: '910000900000'
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    sxgeoCity:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        lat:
+                          type: string
+                        lon:
+                          type: string
+                    sxgeo_city_id:
+                      type: string
+                    tdd_city_code:
+                      type: string
   /1.0/geography/email/get-list:
     get:
-      summary: "Список email"
+      summary: Список email
+      parameters:
+      - name: geography_city_id
+        in: query
+        schema:
+          type: integer
+        description: Код города географии
+        example: '699'
+      - name: geography_address_id
+        in: query
+        schema:
+          type: integer
+        description: Код адреса географии
+        example: '522'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - value: belgorod1@gtdel.net
+                comment: ''
+                geography_city_id: '699'
+                geography_address_id: '522'
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                    comment:
+                      type: string
+                    geography_city_id:
+                      type: string
+                    geography_address_id:
+                      type: string
   /1.0/geography/phone/get-list:
     get:
-      summary: "Список телефонов"
+      summary: Список телефонов
+      parameters:
+      - name: geography_city_id
+        in: query
+        schema:
+          type: integer
+        description: Код города географии
+        example: '699'
+      - name: geography_address_id
+        in: query
+        schema:
+          type: integer
+        description: Код адреса географии
+        example: '522'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - value: +7 (4722) 400-676
+                comment: ''
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - value: +7 (800) 234-56-50
+                comment: Единая справочная служба
+                geography_city_id: '699'
+                geography_address_id: '522'
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                    comment:
+                      type: string
+                    geography_city_id:
+                      type: string
+                    geography_address_id:
+                      type: string
   /1.0/geography/schedule-group/get-list:
     get:
-      summary: "Список групп расписаний"
+      summary: Список групп расписаний
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - id: '1'
+                name: Выдача груза
+              - id: '2'
+                name: Прием груза
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
   /1.0/geography/schedule/get-list:
     get:
-      summary: "Список расписаний"
+      summary: Список расписаний
+      parameters:
+      - name: geography_city_id
+        in: query
+        schema:
+          type: integer
+        description: Код города географии
+        example: '699'
+      - name: geography_address_id
+        in: query
+        schema:
+          type: integer
+        description: Код адреса географии
+        example: '522'
+      - name: group_id
+        in: query
+        schema:
+          type: integer
+        description: Код вида графика
+        example: '1'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - to: '18:00'
+                day: '1'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '1'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '2'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '1'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '3'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '1'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '4'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '1'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '5'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '1'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '6'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '1'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '7'
+                from: 09:00
+                all_day: '0'
+                freeday: '1'
+                group_id: '1'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '1'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '2'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '2'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '2'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '3'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '2'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '4'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '2'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '5'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '2'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '6'
+                from: 09:00
+                all_day: '0'
+                freeday: '0'
+                group_id: '2'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              - to: '18:00'
+                day: '7'
+                from: 09:00
+                all_day: '0'
+                freeday: '1'
+                group_id: '2'
+                geography_city_id: '699'
+                geography_address_id: '522'
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    to:
+                      type: string
+                    day:
+                      type: string
+                    from:
+                      type: string
+                    all_day:
+                      type: string
+                    freeday:
+                      type: string
+                    group_id:
+                      type: string
+                    geography_city_id:
+                      type: string
+                    geography_address_id:
+                      type: string
   /1.1/geography/address/get-list:
     get:
-      summary: "Список адресов (v1.1)"
+      summary: Список адресов (v1.1)
+      parameters:
+      - name: geography_city_id
+        in: query
+        schema:
+          type: integer
+        description: Код города географии
+        example: '699'
+      - name: withPhone
+        in: query
+        schema:
+          type: string
+        description: Вернуть результат с номерами телфонов
+        example: '1'
+      - name: withEmail
+        in: query
+        schema:
+          type: string
+        description: Вернуть результат с email
+        example: '1'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+              - id: '522'
+                lat: '50.579762'
+                lon: '36.633863'
+                email:
+                - value: belgorod1@gtdel.net
+                  comment: ''
+                  geography_address_id: '522'
+                phone:
+                - value: +7 (4722) 400-676
+                  comment: ''
+                  geography_address_id: '522'
+                - value: +7 (800) 234-56-50
+                  comment: Единая справочная служба
+                  geography_address_id: '522'
+                value: ул. Михайловское шоссе. д.23
+                address_code: '3101'
+                geography_city_id: '699'
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    lat:
+                      type: string
+                    lon:
+                      type: string
+                    email:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          value:
+                            type: string
+                          comment:
+                            type: string
+                          geography_address_id:
+                            type: string
+                    phone:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          value:
+                            type: string
+                          comment:
+                            type: string
+                          geography_address_id:
+                            type: string
+                    value:
+                      type: string
+                    address_code:
+                      type: string
+                    geography_city_id:
+                      type: string

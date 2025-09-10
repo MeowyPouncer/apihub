@@ -2,8 +2,108 @@
   "path": "/1.0/order/get",
   "method": "GET",
   "summary": "Получить информацию о заказе",
-  "request_fields": [],
-  "response_fields": [],
+  "request_fields": [
+    {
+      "name": "sale_number",
+      "description": "номер груза",
+      "type": "string",
+      "required": "Нет",
+      "example": "1105871333"
+    },
+    {
+      "name": "profile_id",
+      "description": "id профиля",
+      "type": "integer",
+      "required": "Нет",
+      "example": "1"
+    }
+  ],
+  "response_fields": [
+    {
+      "name": "to",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "from",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "total",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "sender",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "status",
+      "description": "",
+      "type": "array",
+      "required": "Нет"
+    },
+    {
+      "name": "payment",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "service",
+      "description": "",
+      "type": "array",
+      "required": "Нет"
+    },
+    {
+      "name": "customer",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "recipient",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "contact_to",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "about_cargo",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "contact_from",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "pickup_address",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    },
+    {
+      "name": "delivery_address",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    }
+  ],
   "example_request": "",
-  "example_response": ""
+  "example_response": "{\"to\": {\"code\": \"660000100000\", \"name\": \"Екатеринбург\", \"type\": \"Город\"}, \"from\": {\"code\": \"720000200000\", \"name\": \"Тобольск\", \"type\": \"Город\"}, \"total\": {\"nds\": \"0.0\", \"price\": \"150.0\", \"route\": \"Тобольск-Екатеринбург\", \"comment\": \"\", \"cargo_number\": \"ТБЛЕКБ0051237634\"}, \"sender\": {\"inn\": \"6671271218\", \"kpp\": \"667101001\", \"name\": \"ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ ТРАНСПОРТНАЯ КОМПАНИЯ \\\"GTD\\\"\", \"phone\": \"+773478370109\", \"status\": \"1\", \"debitor\": \"0001011311\", \"short_name\": \"ООО ТК \\\"GTD\\\"\", \"legal_address\": \"-\", \"actual_address\": \"-\"}, \"status\": [{\"code\": \"00\", \"date\": \"2018-01-09\", \"name\": \"Новый заказ\", \"time\": \"16:02:33\"}, {\"code\": \"01\", \"date\": \"2018-01-09\", \"name\": \"Груз принят\", \"time\": \"16:39:06\"}, {\"code\": \"02\", \"date\": \"2018-01-10\", \"name\": \"Отправлен\", \"time\": \"14:29:11\"}, {\"code\": \"03\", \"date\": \"2018-01-11\", \"name\": \"Прибыл\", \"time\": \"11:14:06\"}], \"payment\": {\"code\": \"2\", \"name\": \"Не оплачено\"}, \"service\": [{\"nds\": \"0.00\", \"name\": \"Перевозка груза: Тобольск-Екатеринбург\", \"price\": \"150.0\", \"quantity\": \"1.0\", \"currency_code\": \"RUB\", \"payer_debitor\": \"0001011311\", \"payer_short_name\": \"ООО ТК \\\"GTD\\\"\"}], \"customer\": {\"inn\": \"6671271218\", \"kpp\": \"667101001\", \"name\": \"ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ ТРАНСПОРТНАЯ КОМПАНИЯ \\\"GTD\\\"\", \"phone\": \"+77347777777\", \"status\": \"1\", \"debitor\": \"0001011311\", \"short_name\": \"ООО ТК \\\"GTD\\\"\", \"legal_address\": \"-\", \"actual_address\": \"-\"}, \"recipient\": {\"inn\": \"6671271218\", \"kpp\": \"667101001\", \"name\": \"ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ ТРАНСПОРТНАЯ КОМПАНИЯ \\\"GTD\\\"\", \"phone\": \"+773478370109\", \"status\": \"1\", \"debitor\": \"0001011311\", \"short_name\": \"ООО ТК \\\"GTD\\\"\", \"legal_address\": \"-\", \"actual_address\": \"-\"}, \"contact_to\": {\"name\": \"Гульнара\", \"phone\": \"73478370109\", \"locality\": \"г.Екатеринбург\", \"time_work\": \"\"}, \"about_cargo\": {\"places\": \"1.0\", \"volume\": \"0.001\", \"weight\": \"1.0\", \"volume_unit\": \"куб.м.\", \"weight_unit\": \"кг\"}, \"contact_from\": {\"name\": \"Гульнара\", \"phone\": \"73478370109\", \"locality\": \"г.Тобольск\", \"time_work\": \"\"}, \"pickup_address\": \"Промкомзона №3\", \"delivery_address\": \"ул 8 Марта, дом № 269\"}"
 }

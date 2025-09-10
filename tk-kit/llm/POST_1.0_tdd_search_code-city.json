@@ -2,8 +2,48 @@
   "path": "/1.0/tdd/search/code-city",
   "method": "POST",
   "summary": "Поиск кода города",
-  "request_fields": [],
-  "response_fields": [],
-  "example_request": "",
-  "example_response": ""
+  "request_fields": [
+    {
+      "name": "code_city",
+      "description": "Код города",
+      "type": "string",
+      "required": "Да",
+      "example": "660003100000"
+    },
+    {
+      "name": "kladr",
+      "description": "КЛАДР города",
+      "type": "string",
+      "required": "Да",
+      "example": "6600003100000"
+    }
+  ],
+  "response_fields": [
+    {
+      "name": "code",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    },
+    {
+      "name": "kladr",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    },
+    {
+      "name": "name_kladr",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    },
+    {
+      "name": "type_kladr",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    }
+  ],
+  "example_request": "{\"kladr\": \"6600003100000\"}",
+  "example_response": "{\"code\": \"660003100000\", \"kladr\": \"6600003100000\", \"name_kladr\": \"Красноуфимск\", \"type_kladr\": \"г\"}"
 }

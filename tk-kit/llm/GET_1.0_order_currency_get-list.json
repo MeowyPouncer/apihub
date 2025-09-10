@@ -5,5 +5,5 @@
   "request_fields": [],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"code\": \"RUB\", \"name\": \"Российский Рубль\", \"short_name\": \"руб.\", \"country_code\": \"RU\"}, {\"code\": \"KZT\", \"name\": \"Казахстанский тенге\", \"short_name\": \"тенге\", \"country_code\": \"KZ\"}, {\"code\": \"BYN\", \"name\": \"Белорусский Рубль\", \"short_name\": \"бел. руб.\", \"country_code\": \"BY\"}, {\"code\": \"AMD\", \"name\": \"Армянский драм\", \"short_name\": \"драм\", \"country_code\": \"AM\"}, {\"code\": \"KGS\", \"name\": \"Киргизский сом\", \"short_name\": \"сом\", \"country_code\": \"KG\"}, {\"code\": \"RUB\", \"name\": \"Российский Рубль\", \"short_name\": \"руб.\", \"country_code\": \"AB\"}]"
 }

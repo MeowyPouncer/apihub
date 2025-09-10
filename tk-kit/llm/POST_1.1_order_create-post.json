@@ -2,8 +2,175 @@
   "path": "/1.1/order/create-post",
   "method": "POST",
   "summary": "Создание посылки (v1.1)",
-  "request_fields": [],
-  "response_fields": [],
-  "example_request": "",
-  "example_response": ""
+  "request_fields": [
+    {
+      "name": "city_pickup_code",
+      "description": "Код города откуда",
+      "type": "string",
+      "required": "Да",
+      "example": "660000100000"
+    },
+    {
+      "name": "city_delivery_code",
+      "description": "Код города куда",
+      "type": "string",
+      "required": "Да",
+      "example": "000000000001"
+    },
+    {
+      "name": "customer",
+      "description": "Заказчик",
+      "type": "string",
+      "required": "Да"
+    },
+    {
+      "name": "sender",
+      "description": "Отправитель",
+      "type": "string",
+      "required": "Да"
+    },
+    {
+      "name": "receiver",
+      "description": "Получатель",
+      "type": "string",
+      "required": "Да"
+    },
+    {
+      "name": "type",
+      "description": "Вид перевозки",
+      "type": "integer",
+      "required": "Нет",
+      "example": "01"
+    },
+    {
+      "name": "cargo_type",
+      "description": "Код характера груза (перечень /1.0/order/cargo-type/get-list)",
+      "type": "string",
+      "required": "Да",
+      "example": "Z01"
+    },
+    {
+      "name": "declared_price",
+      "description": "Объявленная стоимость груза (руб)",
+      "type": "integer",
+      "required": "Да",
+      "example": "1000"
+    },
+    {
+      "name": "confirmation_price",
+      "description": "Наличие документов подтверждающих стоимость",
+      "type": "boolean",
+      "required": "Да",
+      "example": "1"
+    },
+    {
+      "name": "service",
+      "description": "массив кодов услуг",
+      "type": "string",
+      "required": "Нет",
+      "example": "[service][0] = S089"
+    },
+    {
+      "name": "type_post",
+      "description": "тип посылки",
+      "type": "string",
+      "required": "Да",
+      "example": "post_type = 02"
+    },
+    {
+      "name": "additional_payment_shipping",
+      "description": "Плательщик перевозки",
+      "type": "string",
+      "required": "Нет",
+      "example": "SE"
+    },
+    {
+      "name": "additional_payment_pickup",
+      "description": "Плательщик забора груза",
+      "type": "string",
+      "required": "Нет",
+      "example": "SE"
+    },
+    {
+      "name": "additional_payment_delivery",
+      "description": "Плательщик доставки груза",
+      "type": "string",
+      "required": "Нет",
+      "example": "SE"
+    },
+    {
+      "name": "insurance",
+      "description": "Услуга страхования груза",
+      "type": "integer",
+      "required": "Да",
+      "example": "1"
+    },
+    {
+      "name": "insurance_agent_code",
+      "description": "Код страхового агента",
+      "type": "string",
+      "required": "Да",
+      "example": "8000152423"
+    },
+    {
+      "name": "have_doc",
+      "description": "Есть документы подтверждающие стоимость груза",
+      "type": "integer",
+      "required": "Да",
+      "example": "1"
+    },
+    {
+      "name": "currency_code",
+      "description": "Валюта результата расчета",
+      "type": "string",
+      "required": "Нет",
+      "example": "currency_code[0] = KZTcurrency_code[1] = RUB"
+    },
+    {
+      "name": "result",
+      "description": "",
+      "type": "object",
+      "required": "Нет",
+      "example": {
+        "sale_number": 1105887652,
+        "cargo_number": "ЕКБМСК0100007251"
+      }
+    },
+    {
+      "name": "status",
+      "description": "",
+      "type": "integer",
+      "required": "Нет",
+      "example": 1
+    },
+    {
+      "name": "message",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": "Спасибо. Скоро с Вами свяжется наш оператор."
+    }
+  ],
+  "response_fields": [
+    {
+      "name": "result",
+      "description": "",
+      "type": "object",
+      "required": "Нет"
+    },
+    {
+      "name": "status",
+      "description": "",
+      "type": "integer",
+      "required": "Нет"
+    },
+    {
+      "name": "message",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    }
+  ],
+  "example_request": "{\"result\": {\"sale_number\": 1105887652, \"cargo_number\": \"ЕКБМСК0100007251\"}, \"status\": 1, \"message\": \"Спасибо. Скоро с Вами свяжется наш оператор.\"}",
+  "example_response": "{\"result\": {\"sale_number\": 1105887652, \"cargo_number\": \"ЕКБМСК0100007251\"}, \"status\": 1, \"message\": \"Спасибо. Скоро с Вами свяжется наш оператор.\"}"
 }

@@ -2,8 +2,30 @@
   "path": "/1.0/tdd/region/get-list",
   "method": "GET",
   "summary": "Список регионов",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "code",
+      "description": "Код населенного пункта",
+      "type": "string",
+      "required": "Нет",
+      "example": "66"
+    },
+    {
+      "name": "country_сode",
+      "description": "Код страны",
+      "type": "string",
+      "required": "Нет",
+      "example": "RU"
+    },
+    {
+      "name": "country_code",
+      "description": "",
+      "type": "string",
+      "required": "Нет",
+      "example": "RU"
+    }
+  ],
   "response_fields": [],
   "example_request": "",
-  "example_response": ""
+  "example_response": "[{\"code\": \"66\", \"name\": \"Свердловская обл.\", \"country_code\": \"RU\"}]"
 }

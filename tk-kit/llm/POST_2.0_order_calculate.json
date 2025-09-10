@@ -2,8 +2,270 @@
   "path": "/2.0/order/calculate",
   "method": "POST",
   "summary": "Расчет стоимости (v2.0)",
-  "request_fields": [],
+  "request_fields": [
+    {
+      "name": "city_pickup_code",
+      "description": "Код города откуда",
+      "type": "string",
+      "required": "Да",
+      "example": "660000100000"
+    },
+    {
+      "name": "city_delivery_code",
+      "description": "Код города куда",
+      "type": "string",
+      "required": "Да",
+      "example": "770000000000"
+    },
+    {
+      "name": "dispatch_address_code",
+      "description": "Код склада откуда",
+      "type": "string",
+      "required": "Нет",
+      "example": "6601"
+    },
+    {
+      "name": "pickpoint_address_code",
+      "description": "Код склада куда",
+      "type": "string",
+      "required": "Нет",
+      "example": "7701"
+    },
+    {
+      "name": "declared_price",
+      "description": "Объявленная стоимость груза (руб)",
+      "type": "integer",
+      "required": "Да",
+      "example": 100
+    },
+    {
+      "name": "confirmation_price",
+      "description": "Наличие документов подтверждающих стоимость",
+      "type": "boolean",
+      "required": "Да",
+      "example": "1"
+    },
+    {
+      "name": "pick_up_prr",
+      "description": "Услуга ПРР при заборе груза",
+      "type": "boolean",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "pick_up_prr_floor",
+      "description": "Этаж подъема",
+      "type": "integer",
+      "required": "Нет",
+      "example": "4"
+    },
+    {
+      "name": "pick_up_prr_distance",
+      "description": "Метры переноса груза",
+      "type": "integer",
+      "required": "Нет",
+      "example": "4"
+    },
+    {
+      "name": "pick_up_prr_freight_elevator",
+      "description": "Наличие грузового лифта",
+      "type": "integer",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "delivery_prr",
+      "description": "Услуга ПРР при доставке",
+      "type": "boolean",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "delivery_prr_floor",
+      "description": "Этаж подъема",
+      "type": "integer",
+      "required": "Нет",
+      "example": "4"
+    },
+    {
+      "name": "delivery_prr_distance",
+      "description": "Метры переноса груза",
+      "type": "integer",
+      "required": "Нет",
+      "example": "4"
+    },
+    {
+      "name": "delivery_prr_freight_elevator",
+      "description": "Наличие грузового лифта",
+      "type": "integer",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "customer",
+      "description": "Заказчик",
+      "type": "integer",
+      "required": "Нет",
+      "example": {
+        "debitor": "0001011311"
+      }
+    },
+    {
+      "name": "sender",
+      "description": "Отправитель",
+      "type": "integer",
+      "required": "Нет",
+      "example": {
+        "debitor": "0001011311"
+      }
+    },
+    {
+      "name": "receiver",
+      "description": "Получатель",
+      "type": "integer",
+      "required": "Нет",
+      "example": {
+        "debitor": "0001011311"
+      }
+    },
+    {
+      "name": "type",
+      "description": "Тип перевозки",
+      "type": "string",
+      "required": "Да",
+      "example": "01"
+    },
+    {
+      "name": "service",
+      "description": "массив кодов услуг",
+      "type": "array",
+      "required": "Нет",
+      "example": "places[0]service[0] = T001places[0]service[1] = S026"
+    },
+    {
+      "name": "height",
+      "description": "Высота груза (см) позиции",
+      "type": "string",
+      "required": "Да",
+      "example": "places[0][height] = 100places[1][height]  = 120"
+    },
+    {
+      "name": "width",
+      "description": "Ширина груза (см) позиции",
+      "type": "string",
+      "required": "Да",
+      "example": "places[0][width] = 100places[1][width] = 120"
+    },
+    {
+      "name": "length",
+      "description": "Длина груза (см) позиции",
+      "type": "string",
+      "required": "Да",
+      "example": "places[0][length] = 100places[1][length] = 120"
+    },
+    {
+      "name": "volume",
+      "description": "Объем М³ позиции",
+      "type": "array",
+      "required": "Да",
+      "example": "places[1][volume] = 1places[0][volume] = 2"
+    },
+    {
+      "name": "weight",
+      "description": "Масса КГ позиции",
+      "type": "string",
+      "required": "Да",
+      "example": "places[0][weight] = 2places[1][weight] = 0.4"
+    },
+    {
+      "name": "pick_up",
+      "description": "Забор груза по городу",
+      "type": "integer",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "delivery",
+      "description": "Доставка груза по городу",
+      "type": "integer",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "have_doc",
+      "description": "Есть документы подтверждающие стоимость груза",
+      "type": "integer",
+      "required": "Да",
+      "example": "1"
+    },
+    {
+      "name": "cargo_type_code",
+      "description": "Код характера груза",
+      "type": "string",
+      "required": "Нет",
+      "example": "01"
+    },
+    {
+      "name": "additional_payment_shipping",
+      "description": "Код плательщика перевозки груза (AG - заказчик, SE - отправитель, WE - получатель)",
+      "type": "string",
+      "required": "Нет",
+      "example": "AG"
+    },
+    {
+      "name": "additional_payment_pickup",
+      "description": "Код плательщика забора груза с адреса (AG - заказчик, SE - отправитель, WE - получатель)",
+      "type": "string",
+      "required": "Нет",
+      "example": "SE"
+    },
+    {
+      "name": "additional_payment_delivery",
+      "description": "Код плательщика доставки груза на адрес (AG - заказчик, SE - отправитель, WE - получатель)",
+      "type": "string",
+      "required": "Нет",
+      "example": "WE"
+    },
+    {
+      "name": "currency_code",
+      "description": "Валюта результата расчета",
+      "type": "string",
+      "required": "Нет",
+      "example": "currency_code[0] = KZTcurrency_code[1] = RUB"
+    },
+    {
+      "name": "all_places_same",
+      "description": "Все места одинаковы по размеру",
+      "type": "boolean",
+      "required": "Нет",
+      "example": "1"
+    },
+    {
+      "name": "places",
+      "description": "",
+      "type": "array",
+      "required": "Нет",
+      "example": [
+        {
+          "count_place": 1,
+          "height": 100,
+          "width": 100,
+          "length": 100,
+          "weight": 100,
+          "service": [
+            "S026",
+            "T001"
+          ]
+        },
+        {
+          "count_place": 4,
+          "weight": 10,
+          "volume": 4
+        }
+      ]
+    }
+  ],
   "response_fields": [],
-  "example_request": "",
-  "example_response": ""
+  "example_request": "{\"city_pickup_code\": \"660000100000\", \"city_delivery_code\": \"770000000000\", \"dispatch_address_code\": \"6601\", \"pickpoint_address_code\": \"7701\", \"declared_price\": 100, \"sender\": {\"debitor\": \"0001011311\"}, \"receiver\": {\"debitor\": \"0001011311\"}, \"customer\": {\"debitor\": \"0001011311\"}, \"additional_payment_shipping\": \"AG\", \"additional_payment_pickup\": \"SE\", \"additional_payment_delivery\": \"WE\", \"type\": \"01\", \"places\": [{\"count_place\": 1, \"height\": 100, \"width\": 100, \"length\": 100, \"weight\": 100, \"service\": [\"S026\", \"T001\"]}, {\"count_place\": 4, \"weight\": 10, \"volume\": 4}]}",
+  "example_response": "[{\"01\": {\"cost\": 23348, \"name\": \"Стандарт\", \"time\": 6, \"detail\": [{\"code\": \"S039\", \"name\": \"Груз\", \"price\": 21078}, {\"code\": \"S026\", \"name\": \"Мешок S\", \"price\": 60}, {\"code\": \"S025\", \"name\": \"ЗТТ (деревянная обрешетка)\", \"price\": 2100}, {\"code\": \"S087\", \"name\": \"Упаковка в секьюрити пак\", \"price\": 50}, {\"code\": \"S103\", \"name\": \"Возмещение страхования груза по объяв.ст\", \"price\": 60}, {\"code\": \"S118\", \"name\": \"Перевозка Екатеринбург-Сургут(Стандарт)\", \"price\": 0}], \"messages_log\": [], \"currency_code\": \"RUB\"}}]"
 }

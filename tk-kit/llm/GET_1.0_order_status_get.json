@@ -2,8 +2,59 @@
   "path": "/1.0/order/status/get",
   "method": "GET",
   "summary": "Статус заказа",
-  "request_fields": [],
-  "response_fields": [],
+  "request_fields": [
+    {
+      "name": "cargo_number",
+      "description": "номер груза",
+      "type": "string",
+      "required": "Нет",
+      "example": "ТБЛЕКБ0010000111"
+    }
+  ],
+  "response_fields": [
+    {
+      "name": "to",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    },
+    {
+      "name": "from",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    },
+    {
+      "name": "phone",
+      "description": "",
+      "type": "array",
+      "required": "Нет"
+    },
+    {
+      "name": "notice",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    },
+    {
+      "name": "status",
+      "description": "",
+      "type": "array",
+      "required": "Нет"
+    },
+    {
+      "name": "address",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    },
+    {
+      "name": "schedule",
+      "description": "",
+      "type": "string",
+      "required": "Нет"
+    }
+  ],
   "example_request": "",
-  "example_response": ""
+  "example_response": "{\"to\": \"720000100000\", \"from\": \"660000100000\", \"phone\": [\"+73432789630\", \"+78002345650\"], \"notice\": \"Можно получить c 2013-10-11\", \"status\": [{\"code\": \"00\", \"date\": \"2013-10-04\", \"name\": \"Новый заказ\", \"time\": \"08:24:35\"}, {\"code\": \"01\", \"date\": \"2013-10-08\", \"name\": \"Груз принят\", \"time\": \"04:52:11\"}, {\"code\": \"03\", \"date\": \"2013-10-11\", \"name\": \"Прибыл\", \"time\": \"08:42:28\"}, {\"code\": \"04\", \"date\": \"2013-10-12\", \"name\": \"Выдан\", \"time\": \"13:04:20\"}, {\"code\": \"04\", \"date\": \"2013-10-12\", \"name\": \"Выдан\", \"time\": \"13:04:20\"}], \"address\": \"Город Екатеринбург, Улица Маневровая, д. 41\", \"schedule\": \"ПН-ПТ 9:00-19:00, СБ 10:00-15:00\"}"
 }
