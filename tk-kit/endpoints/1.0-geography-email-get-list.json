@@ -1,5 +1,0 @@
-{
-  "path": "/1.0/geography/email/get-list",
-  "method": "GET",
-  "summary": "Список email"
-}
