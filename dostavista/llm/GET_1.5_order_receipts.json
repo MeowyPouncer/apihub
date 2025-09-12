@@ -1,0 +1,12 @@
+{
+  "path": "/1.5/receipts",
+  "method": "GET",
+  "summary": "Детализация стоимости заказа",
+  "request_fields": [
+    {"name": "order_id", "description": "Номер заказа или список (макс. 10)", "type": "integer|array[integer]", "required": "Да", "example": 340500}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "receipts", "description": "Детализация по заказам", "type": "array", "required": "Да"}
+  ]
+}

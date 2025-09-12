@@ -1,0 +1,12 @@
+{
+  "path": "/1.5/create-deliveries",
+  "method": "POST",
+  "summary": "Создание черновиков доставок",
+  "request_fields": [
+    {"name": "deliveries", "description": "Список доставок (draft)", "type": "array", "required": "Да", "example": [{"address": "Москва, ул. Покровка, 11", "contact_person": {"phone": "79030000001"}}]}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "deliveries", "description": "Созданные черновики доставок", "type": "array", "required": "Да"}
+  ]
+}

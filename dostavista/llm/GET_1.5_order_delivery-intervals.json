@@ -1,0 +1,12 @@
+{
+  "path": "/1.5/delivery-intervals",
+  "method": "GET",
+  "summary": "Получение списка интервалов",
+  "request_fields": [
+    {"name": "date", "description": "Дата (YYYY-MM-DD)", "type": "date", "required": "Нет", "example": "2025-09-12"}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "delivery_intervals", "description": "Список интервалов", "type": "array", "required": "Да"}
+  ]
+}

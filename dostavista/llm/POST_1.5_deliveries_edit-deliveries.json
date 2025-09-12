@@ -1,0 +1,12 @@
+{
+  "path": "/1.5/edit-deliveries",
+  "method": "POST",
+  "summary": "Редактирование черновиков доставок",
+  "request_fields": [
+    {"name": "deliveries", "description": "Список доставок для редактирования (нужно передать delivery_id)", "type": "array", "required": "Да", "example": [{"delivery_id": 11712, "address": "Москва, ул. Солянка, 4"}]}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "deliveries", "description": "Отредактированные черновики доставок", "type": "array", "required": "Да"}
+  ]
+}

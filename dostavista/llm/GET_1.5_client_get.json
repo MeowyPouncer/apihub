@@ -1,0 +1,9 @@
+{
+  "path": "/1.5/client",
+  "method": "GET",
+  "summary": "Данные клиентского профиля",
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "client", "description": "Данные клиента", "type": "object", "required": "Да"}
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "path": "/1.5/calculate-order",
+  "method": "POST",
+  "summary": "Расчет стоимости доставки",
+  "request_fields": [
+    {"name": "type", "description": "Тип заказа (по умолчанию standard)", "type": "string", "required": "Нет", "example": "standard"},
+    {"name": "matter", "description": "Что везем", "type": "string", "required": "Нет", "example": "Документы"},
+    {"name": "vehicle_type_id", "description": "Тип транспорта", "type": "integer", "required": "Нет", "example": 6},
+    {"name": "total_weight_kg", "description": "Общий вес, кг", "type": "integer", "required": "Нет", "example": 0},
+    {"name": "insurance_amount", "description": "Сумма страховки", "type": "money", "required": "Нет", "example": "0.00"},
+    {"name": "is_client_notification_enabled", "description": "Уведомления клиенту", "type": "boolean", "required": "Нет", "example": false},
+    {"name": "is_contact_person_notification_enabled", "description": "SMS получателям", "type": "boolean", "required": "Нет", "example": false},
+    {"name": "is_route_optimizer_enabled", "description": "Оптимизация маршрута", "type": "boolean", "required": "Нет", "example": false},
+    {"name": "loaders_count", "description": "Число грузчиков", "type": "integer", "required": "Нет", "example": 0},
+    {"name": "backpayment_details", "description": "Реквизиты перевода выручки", "type": "string", "required": "Нет", "example": null},
+    {"name": "is_motobox_required", "description": "Требуется мотобокс", "type": "boolean", "required": "Нет", "example": false},
+    {"name": "is_thermobox_required", "description": "Требуется термосумка", "type": "boolean", "required": "Нет", "example": false},
+    {"name": "payment_method", "description": "Способ оплаты", "type": "string", "required": "Нет", "example": "cash"},
+    {"name": "bank_card_id", "description": "ID банковской карты", "type": "integer", "required": "Нет", "example": null},
+    {"name": "promo_code", "description": "Промокод", "type": "string", "required": "Нет", "example": null},
+    {"name": "points", "description": "Список точек (адреса)", "type": "array", "required": "Нет", "example": [{"address": "Москва, ул. Покровка, 11"}, {"address": "Москва, ул. Солянка, 4"}]}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "order", "description": "Расчёт заказа", "type": "object", "required": "Да"},
+    {"name": "warnings", "description": "Предупреждения", "type": "array", "required": "Нет"},
+    {"name": "parameter_warnings", "description": "Предупреждения по полям", "type": "object", "required": "Нет"}
+  ]
+}

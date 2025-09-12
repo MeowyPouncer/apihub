@@ -1,0 +1,1699 @@
+openapi: 3.1.0
+info:
+  title: Dostavista Business API
+  version: "1.5"
+  description: |
+    Business API позволяет работать с заказами сервиса Достависта с помощью HTTP‑запросов.
+
+    Базовые правила:
+    - Все запросы выполняются по HTTPS.
+    - Методы: GET и POST.
+    - POST-тело в формате JSON (UTF-8), GET-параметры — в query.
+    - Во всех запросах передавать заголовок `X-DV-Auth-Token`.
+
+    Серверы:
+    - Тест: https://robotapitest.dostavista.ru/api/business/1.5
+    - Прод: https://robotapi.dostavista.ru/api/business/1.5
+
+    Общие ответы:
+    - Успешный ответ содержит `is_successful: true` (HTTP 200).
+    - Ошибочный ответ (например, валидация): HTTP 400 и поля `is_successful: false`, `errors`, `parameter_errors`.
+
+    Примечание: раздел «История изменений API» не включён в спецификацию. Необязательные справочные разделы
+    (типы параметров, статусы, уведомления и т.п.) отражены в описаниях и компонентах по мере добавления методов.
+  license:
+    name: GNU General Public License v3.0
+    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+servers:
+  - url: https://robotapitest.dostavista.ru/api/business/{version}
+    description: Тестовый сервер
+    variables:
+      version:
+        default: "1.5"
+        enum: ["1.5"]
+  - url: https://robotapi.dostavista.ru/api/business/{version}
+    description: Рабочий сервер
+    variables:
+      version:
+        default: "1.5"
+        enum: ["1.5"]
+security:
+  - dvAuth: []
+tags:
+  - name: Orders
+    description: Работа с заказами
+  - name: Deliveries
+    description: Черновики доставок и маршруты
+  - name: Couriers
+    description: Данные и местоположение курьера
+  - name: Client
+    description: Клиентский профиль
+  - name: BankCards
+    description: Привязанные банковские карты
+  - name: Intervals
+    description: Интервалы для Premium доставки
+  - name: Receipts
+    description: Детализация стоимости заказа
+  - name: Dictionaries
+    description: Справочники и перечисления
+components:
+  securitySchemes:
+    dvAuth:
+      type: apiKey
+      in: header
+      name: X-DV-Auth-Token
+      description: Секретный токен. Никогда не публикуйте его в открытом доступе.
+  schemas:
+    OrderType:
+      type: string
+      description: Тип заказа
+      enum: [standard, same_day]
+    PaymentMethod:
+      type: string
+      description: Способ оплаты
+      enum: [cash, balance, bank_card]
+    VehicleTypeId:
+      type: integer
+      description: |
+        Тип транспорта:
+        1 — Легковой автомобиль / джип / пикап (до 500 кг)
+        2 — Каблук (до 700 кг)
+        3 — Микроавтобус / портер (до 1000 кг)
+        4 — Газель (до 1500 кг)
+        5 — Грузовой автомобиль
+        6 — Пеший курьер
+        7 — Легковой автомобиль
+      enum: [1, 2, 3, 4, 5, 6, 7]
+    OrderStatus:
+      type: string
+      description: Статус заказа
+      enum: [new, available, active, completed, reactivated, draft, canceled, delayed]
+    DeliveryStatus:
+      type: string
+      description: Статус доставки
+      enum: [draft, planned, active, finished, canceled, delayed, courier_assigned, courier_departed, courier_at_pickup, parcel_picked_up, courier_arrived, deleted, return_courier_picked_up, return_finished]
+    ErrorCode:
+      type: string
+      description: Общие коды ошибок
+      enum: [unexpected_error, invalid_api_version, required_api_upgrade, requests_limit_exceeded, required_auth_token, invalid_auth_token, required_method_get, required_method_post, invalid_post_json, invalid_parameters, unapproved_contract, service_unavailable, invalid_api_method, buyout_not_allowed, insufficient_balance_for_buyout, order_cannot_be_edited, order_cannot_be_canceled, insufficient_balance, buyout_amount_limit_exceeded, route_not_found, total_payment_amount_limit_exceeded, order_is_duplicate, insufficient_funds, card_payment_failed, impossible_delivery_fee_calculation, tax_retension_limit]
+    ParameterErrorCode:
+      type: string
+      description: Коды ошибок в параметрах запроса
+      enum: [required, unknown, invalid_list, invalid_object, invalid_boolean, invalid_date, invalid_date_format, invalid_float, invalid_integer, invalid_string, invalid_order, invalid_point, invalid_order_status, invalid_vehicle_type, invalid_phone, invalid_region, invalid_order_package, invalid_delivery_id, invalid_delivery_package, invalid_delivery_status, invalid_bank_card, invalid_url, invalid_enum_value, invalid_postal_code, invalid_delivery_interval, different_regions, address_not_found, min_length, max_length, min_date, max_date, min_size, max_size, min_value, max_value, cannot_be_past, start_after_end, earlier_than_previous_point, coordinates_out_of_bounds, not_editable, not_nullable, not_allowed, order_payment_only_one_point, cod_agreement_required, cod_is_not_allowed_with_buyout, sameday_pickup_interval_too_short, invalid_value, promo_code_already_used, promo_code_not_available]
+    ApiSuccess:
+      type: object
+      properties:
+        is_successful:
+          type: boolean
+      required: [is_successful]
+    ApiError:
+      type: object
+      properties:
+        is_successful:
+          type: boolean
+          const: false
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorCode'
+          description: Массив кодов ошибок
+        parameter_errors:
+          description: Коды ошибок в параметрах запроса (структура соответствует телу запроса)
+          oneOf:
+            - type: object
+              additionalProperties:
+                oneOf:
+                  - type: array
+                    items: { $ref: '#/components/schemas/ParameterErrorCode' }
+                  - type: object
+                  - type: 'null'
+            - type: 'null'
+      required: [is_successful, errors]
+    Money:
+      type: string
+      description: Денежная сумма в рублях, 2 знака после запятой
+      pattern: "^-?\\d+\\.\\d{2}$"
+      example: "390.00"
+    Coordinate:
+      type: string
+      description: Координата в строковом виде
+      example: "55.7592577"
+    Phone:
+      type: string
+      description: Номер телефона в международном формате
+      example: "79030000001"
+    ContactPerson:
+      type: object
+      properties:
+        phone:
+          $ref: '#/components/schemas/Phone'
+        phone_extension:
+          type: [string, 'null']
+        name:
+          type: [string, 'null']
+          maxLength: 350
+      required: [phone]
+    PointInput:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Адрес точки
+          maxLength: 350
+        latitude:
+          $ref: '#/components/schemas/Coordinate'
+        longitude:
+          $ref: '#/components/schemas/Coordinate'
+        required_start_datetime:
+          type: [string, 'null']
+          format: date-time
+        required_finish_datetime:
+          type: [string, 'null']
+          format: date-time
+        contact_person:
+          $ref: '#/components/schemas/ContactPerson'
+        note:
+          type: [string, 'null']
+        client_order_id:
+          type: [string, 'null']
+          maxLength: 32
+        taking_amount:
+          $ref: '#/components/schemas/Money'
+        buyout_amount:
+          $ref: '#/components/schemas/Money'
+        is_cod_cash_voucher_required:
+          type: boolean
+        is_order_payment_here:
+          type: boolean
+        building_number:
+          type: [string, 'null']
+        apartment_number:
+          type: [string, 'null']
+        entrance_number:
+          type: [string, 'null']
+        intercom_code:
+          type: [string, 'null']
+        floor_number:
+          type: [string, 'null']
+        invisible_mile_navigation_instructions:
+          type: [string, 'null']
+        place_photo_url:
+          type: [string, 'null']
+        sign_photo_url:
+          type: [string, 'null']
+        checkin_code:
+          type: [string, 'null']
+        arrival_courier_note:
+          type: [string, 'null']
+        delivery_id:
+          type: [integer, 'null']
+        packages:
+          type: array
+          items: { $ref: '#/components/schemas/OrderPackage' }
+      required: [address, contact_person]
+    Checkin:
+      type: object
+      properties:
+        recipient_full_name: { type: [string, 'null'] }
+        recipient_position: { type: [string, 'null'] }
+    OrderPackage:
+      type: object
+      properties:
+        order_package_id: { type: integer }
+        ware_code:
+          type: string
+          maxLength: 255
+        description:
+          type: [string, 'null']
+          maxLength: 1000
+        items_count: { type: number }
+        item_payment_amount:
+          $ref: '#/components/schemas/Money'
+        nomenclature_code: { type: string }
+    Point:
+      allOf:
+        - $ref: '#/components/schemas/PointInput'
+        - type: object
+          properties:
+            point_id:
+              type: [integer, 'null']
+            delivery_id:
+              type: [integer, 'null']
+            client_order_id:
+              type: [string, 'null']
+            arrival_start_datetime:
+              type: [string, 'null']
+              format: date-time
+            arrival_finish_datetime:
+              type: [string, 'null']
+              format: date-time
+            estimated_arrival_datetime:
+              type: [string, 'null']
+              format: date-time
+            courier_visit_datetime:
+              type: [string, 'null']
+              format: date-time
+            is_return_point:
+              type: boolean
+              default: false
+            taking_amount:
+              $ref: '#/components/schemas/Money'
+            buyout_amount:
+              $ref: '#/components/schemas/Money'
+            note:
+              type: [string, 'null']
+            packages:
+              type: array
+              items: { $ref: '#/components/schemas/OrderPackage' }
+            is_cod_cash_voucher_required:
+              type: boolean
+            is_order_payment_here:
+              type: boolean
+            building_number: { type: [string, 'null'] }
+            entrance_number: { type: [string, 'null'] }
+            intercom_code: { type: [string, 'null'] }
+            floor_number: { type: [string, 'null'] }
+            apartment_number: { type: [string, 'null'] }
+            invisible_mile_navigation_instructions: { type: [string, 'null'] }
+            place_photo_url: { type: [string, 'null'] }
+            sign_photo_url: { type: [string, 'null'] }
+            checkin_code: { type: [string, 'null'] }
+            arrival_courier_note: { type: [string, 'null'] }
+            checkin:
+              oneOf: [ { $ref: '#/components/schemas/Checkin' }, { type: 'null' } ]
+            previous_point_driving_distance_meters: { type: [integer, 'null'] }
+            tracking_url: { type: [string, 'null'] }
+    Order:
+      type: object
+      description: Сокращённая модель заказа (частично, будет дополняться)
+      properties:
+        order_id:
+          type: [integer, 'null']
+        order_name:
+          type: [string, 'null']
+        type:
+          $ref: '#/components/schemas/OrderType'
+        vehicle_type_id:
+          $ref: '#/components/schemas/VehicleTypeId'
+        created_datetime:
+          type: string
+          format: date-time
+        finish_datetime:
+          type: [string, 'null']
+          format: date-time
+        status:
+          oneOf:
+            - $ref: '#/components/schemas/OrderStatus'
+            - type: 'null'
+        status_description:
+          type: [string, 'null']
+        matter:
+          type: [string, 'null']
+          maxLength: 5000
+        total_weight_kg:
+          type: integer
+          default: 0
+        is_client_notification_enabled:
+          type: boolean
+        is_contact_person_notification_enabled:
+          type: boolean
+        loaders_count:
+          type: integer
+          default: 0
+        backpayment_details:
+          type: [string, 'null']
+          maxLength: 300
+        points:
+          type: array
+          items: { $ref: '#/components/schemas/Point' }
+        payment_amount:
+          $ref: '#/components/schemas/Money'
+        delivery_fee_amount:
+          $ref: '#/components/schemas/Money'
+        weight_fee_amount:
+          $ref: '#/components/schemas/Money'
+        insurance_amount:
+          $ref: '#/components/schemas/Money'
+        insurance_fee_amount:
+          $ref: '#/components/schemas/Money'
+        loading_fee_amount:
+          $ref: '#/components/schemas/Money'
+        money_transfer_fee_amount:
+          $ref: '#/components/schemas/Money'
+        cod_fee_amount:
+          $ref: '#/components/schemas/Money'
+        overnight_fee_amount:
+          $ref: '#/components/schemas/Money'
+        promo_code_discount_amount:
+          $ref: '#/components/schemas/Money'
+        return_fee_amount:
+          $ref: '#/components/schemas/Money'
+        waiting_fee_amount:
+          $ref: '#/components/schemas/Money'
+        late_cancellation_fee_amount:
+          $ref: '#/components/schemas/Money'
+        late_cancellation_penalty_amount:
+          $ref: '#/components/schemas/Money'
+        is_motobox_required:
+          type: boolean
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+        bank_card_id:
+          type: [integer, 'null']
+        applied_promo_code:
+          type: [string, 'null']
+        is_return_required:
+          type: boolean
+          default: false
+        vat_fee_amount:
+          $ref: '#/components/schemas/Money'
+        backpayment_amount:
+          $ref: '#/components/schemas/Money'
+        backpayment_photo_url:
+          type: [string, 'null']
+        itinerary_document_url:
+          type: [string, 'null']
+        waybill_document_url:
+          type: [string, 'null']
+        courier:
+          oneOf: [ { $ref: '#/components/schemas/Courier' }, { type: 'null' } ]
+        courier_vehicle:
+          oneOf: [ { $ref: '#/components/schemas/CourierVehicle' }, { type: 'null' } ]
+    CalculateOrderRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/OrderType'
+        matter:
+          type: [string, 'null']
+          maxLength: 5000
+        vehicle_type_id:
+          $ref: '#/components/schemas/VehicleTypeId'
+          description: |
+            Тип транспорта. Для заказов типа same_day параметр передавать запрещено — он определяется автоматически.
+        total_weight_kg:
+          type: integer
+          description: |
+            Общий вес отправления, кг. Для same_day обязателен и должен быть больше 0.
+        insurance_amount:
+          $ref: '#/components/schemas/Money'
+        is_client_notification_enabled:
+          type: boolean
+        is_contact_person_notification_enabled:
+          type: boolean
+        is_route_optimizer_enabled:
+          type: boolean
+        loaders_count:
+          type: integer
+          maximum: 11
+        backpayment_details:
+          type: [string, 'null']
+          maxLength: 300
+        backpayment_amount:
+          $ref: '#/components/schemas/Money'
+        is_motobox_required:
+          type: boolean
+        is_thermobox_required:
+          type: boolean
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+        bank_card_id:
+          type: [integer, 'null']
+        promo_code:
+          type: [string, 'null']
+        is_return_required:
+          type: boolean
+          default: false
+        points:
+          type: array
+          description: |
+            Список точек. Для same_day должно быть ровно 2 точки: у первой required_* не задаются, у второй —
+            required_start_datetime и required_finish_datetime должны соответствовать выбранному интервалу (см. /delivery-intervals).
+          items: { $ref: '#/components/schemas/PointInput' }
+      required: []
+      allOf:
+        - if:
+            properties:
+              type:
+                const: same_day
+          then:
+            required: [total_weight_kg, points]
+            properties:
+              total_weight_kg:
+                minimum: 1
+              # Запрещаем передачу vehicle_type_id для same_day
+              vehicle_type_id: false
+              points:
+                type: array
+                minItems: 2
+                maxItems: 2
+                prefixItems:
+                  - allOf:
+                      - $ref: '#/components/schemas/PointInput'
+                      - type: object
+                        properties:
+                          required_start_datetime: { const: null }
+                          required_finish_datetime: { const: null }
+                  - allOf:
+                      - $ref: '#/components/schemas/PointInput'
+                      - type: object
+                        properties:
+                          required_start_datetime:
+                            type: string
+                            format: date-time
+                          required_finish_datetime:
+                            type: string
+                            format: date-time
+                        required: [required_start_datetime, required_finish_datetime]
+    CalculateOrderResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccess'
+        - type: object
+          properties:
+            order:
+              $ref: '#/components/schemas/Order'
+            warnings:
+              type: array
+              items:
+                type: string
+            parameter_warnings:
+              oneOf:
+                - type: object
+                - type: 'null'
+    OrdersListResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccess'
+        - type: object
+          properties:
+            orders:
+              type: array
+              items: { $ref: '#/components/schemas/Order' }
+            next_page_id:
+              type: [integer, 'null']
+            orders_count:
+              type: integer
+    EditOrderRequest:
+      allOf:
+        - $ref: '#/components/schemas/CalculateOrderRequest'
+        - type: object
+          properties:
+            order_id:
+              type: integer
+          required: [order_id]
+    Receipt:
+      type: object
+      properties:
+        order_id:
+          type: integer
+        total_payment_amount:
+          $ref: '#/components/schemas/Money'
+        total_payment_vat_amount:
+          $ref: '#/components/schemas/Money'
+        royalty_fee_amount:
+          $ref: '#/components/schemas/Money'
+        royalty_fee_vat_amount:
+          $ref: '#/components/schemas/Money'
+        delivery_fee_amount:
+          $ref: '#/components/schemas/Money'
+        delivery_fee_vat_amount:
+          $ref: '#/components/schemas/Money'
+        return_fee_amount:
+          $ref: '#/components/schemas/Money'
+        return_fee_vat_amount:
+          $ref: '#/components/schemas/Money'
+        waiting_fee_amount:
+          $ref: '#/components/schemas/Money'
+        waiting_fee_vat_amount:
+          $ref: '#/components/schemas/Money'
+        sms_fee_amount:
+          $ref: '#/components/schemas/Money'
+        sms_fee_vat_amount:
+          $ref: '#/components/schemas/Money'
+        insurance_fee_amount:
+          $ref: '#/components/schemas/Money'
+        insurance_fee_vat_amount:
+          $ref: '#/components/schemas/Money'
+        cod_fee_amount:
+          $ref: '#/components/schemas/Money'
+        cod_fee_vat_amount:
+          $ref: '#/components/schemas/Money'
+        buyout_fee_amount:
+          $ref: '#/components/schemas/Money'
+        buyout_fee_vat_amount:
+          $ref: '#/components/schemas/Money'
+        late_cancellation_fee_amount:
+          $ref: '#/components/schemas/Money'
+        late_cancellation_fee_vat_amount:
+          $ref: '#/components/schemas/Money'
+    ReceiptsResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccess'
+        - type: object
+          properties:
+            receipts:
+              type: array
+              items: { $ref: '#/components/schemas/Receipt' }
+    DeliveryInterval:
+      type: object
+      properties:
+        required_start_datetime:
+          type: string
+          format: date-time
+        required_finish_datetime:
+          type: string
+          format: date-time
+    DeliveryIntervalsResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccess'
+        - type: object
+          properties:
+            delivery_intervals:
+              type: array
+              items: { $ref: '#/components/schemas/DeliveryInterval' }
+    DeliveryDraftInput:
+      type: object
+      properties:
+        delivery_type:
+          type: string
+          description: Тип доставки (поддерживается plain)
+          default: plain
+        client_order_id:
+          type: [string, 'null']
+          maxLength: 32
+        contact_person:
+          $ref: '#/components/schemas/ContactPerson'
+        taking_amount:
+          $ref: '#/components/schemas/Money'
+        buyout_amount:
+          $ref: '#/components/schemas/Money'
+        is_cod_cash_voucher_required:
+          type: boolean
+        is_motobox_required:
+          type: boolean
+        is_door_to_door:
+          type: boolean
+        is_return_to_first_point_required:
+          type: boolean
+        matter:
+          type: [string, 'null']
+          maxLength: 5000
+        insurance_amount:
+          $ref: '#/components/schemas/Money'
+        weight_kg:
+          type: integer
+        building_number:
+          type: [string, 'null']
+        apartment_number:
+          type: [string, 'null']
+        entrance_number:
+          type: [string, 'null']
+        intercom_code:
+          type: [string, 'null']
+        floor_number:
+          type: [string, 'null']
+        invisible_mile_navigation_instructions:
+          type: [string, 'null']
+        address:
+          type: string
+          maxLength: 350
+        latitude:
+          type: [string, 'null']
+        longitude:
+          type: [string, 'null']
+        required_start_datetime:
+          type: [string, 'null']
+          format: date-time
+        required_finish_datetime:
+          type: [string, 'null']
+          format: date-time
+        packages:
+          type: array
+          items: { $ref: '#/components/schemas/DeliveryPackageInput' }
+      required: [contact_person, address]
+    DeliveryPackageInput:
+      type: object
+      properties:
+        ware_code:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 1000
+        items_count: { type: number }
+        item_payment_amount: { $ref: '#/components/schemas/Money' }
+      required: [ware_code, description, items_count, item_payment_amount]
+    DeliveryPackage:
+      type: object
+      properties:
+        delivery_package_id: { type: [integer, 'null'] }
+        ware_code: { type: string }
+        description: { type: [string, 'null'] }
+        items_count_units: { type: string, enum: [pieces, kilograms] }
+        items_count: { type: number }
+        item_payment_amount: { $ref: '#/components/schemas/Money' }
+    Delivery:
+      allOf:
+        - $ref: '#/components/schemas/DeliveryDraftInput'
+        - type: object
+          properties:
+            delivery_id:
+              type: integer
+            order_id:
+              type: [integer, 'null']
+            client_id:
+              type: integer
+            status:
+              $ref: '#/components/schemas/DeliveryStatus'
+            status_datetime:
+              type: string
+              format: date-time
+            created_datetime:
+              type: string
+              format: date-time
+            order_name:
+              type: [string, 'null']
+            order_payment_amount:
+              oneOf: [ { $ref: '#/components/schemas/Money' }, { type: 'null' } ]
+            delivery_price_amount:
+              oneOf: [ { $ref: '#/components/schemas/Money' }, { type: 'null' } ]
+            cancel_reason:
+              type: [string, 'null']
+            point_id:
+              type: [integer, 'null']
+            courier:
+              oneOf: [ { $ref: '#/components/schemas/Courier' }, { type: 'null' } ]
+            courier_vehicle:
+              oneOf: [ { $ref: '#/components/schemas/CourierVehicle' }, { type: 'null' } ]
+            checkin_issue_name:
+              type: [string, 'null']
+            packages:
+              type: array
+              items: { $ref: '#/components/schemas/DeliveryPackage' }
+    DeliveriesListResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccess'
+        - type: object
+          properties:
+            deliveries:
+              type: array
+              items: { $ref: '#/components/schemas/Delivery' }
+            next_page_id:
+              type: [integer, 'null']
+            deliveries_count:
+              type: integer
+    MakeDeliveriesRoutesRequest:
+      type: object
+      properties:
+        vehicle_type_id:
+          type: [integer, 'null']
+        start_point:
+          $ref: '#/components/schemas/PointInput'
+        deliveries:
+          type: array
+          items:
+            type: object
+            properties:
+              delivery_id:
+                type: integer
+            required: [delivery_id]
+      required: [start_point, deliveries]
+    RoutePoint:
+      type: object
+      properties:
+        delivery_id:
+          type: [integer, 'null']
+        latitude:
+          $ref: '#/components/schemas/Coordinate'
+        longitude:
+          $ref: '#/components/schemas/Coordinate'
+      required: [latitude, longitude]
+    Route:
+      type: object
+      properties:
+        route_points:
+          type: array
+          items: { $ref: '#/components/schemas/RoutePoint' }
+    MakeDeliveriesRoutesResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccess'
+        - type: object
+          properties:
+            routes:
+              type: array
+              items: { $ref: '#/components/schemas/Route' }
+    Courier:
+      type: object
+      properties:
+        courier_id: { type: integer }
+        surname: { type: string }
+        name: { type: string }
+        middlename: { type: [string, 'null'] }
+        phone: { $ref: '#/components/schemas/Phone' }
+        photo_url: { type: [string, 'null'] }
+        latitude: { type: [string, 'null'] }
+        longitude: { type: [string, 'null'] }
+    CourierVehicle:
+      type: object
+      properties:
+        number: { type: [string, 'null'] }
+        region: { type: [string, 'null'] }
+        color: { type: [string, 'null'] }
+        name: { type: [string, 'null'] }
+    CourierResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccess'
+        - type: object
+          properties:
+            courier:
+              oneOf:
+                - $ref: '#/components/schemas/Courier'
+                - type: 'null'
+            courier_vehicle:
+              oneOf:
+                - $ref: '#/components/schemas/CourierVehicle'
+                - type: 'null'
+    Client:
+      type: object
+      properties:
+        name: { type: [string, 'null'] }
+        phone: { type: [string, 'null'] }
+        email: { type: [string, 'null'] }
+        legal_type: { type: string }
+        allowed_payment_methods:
+          type: array
+          items: { type: string }
+    ClientResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccess'
+        - type: object
+          properties:
+            client:
+              $ref: '#/components/schemas/Client'
+    BankCard:
+      type: object
+      properties:
+        bank_card_id: { type: integer }
+        bank_card_number_mask: { type: [string, 'null'] }
+        expiration_date: { type: [string, 'null'] }
+        card_type: { type: [string, 'null'] }
+    BankCardsResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiSuccess'
+        - type: object
+          properties:
+            bank_cards:
+              type: array
+              items: { $ref: '#/components/schemas/BankCard' }
+paths:
+  /calculate-order:
+    post:
+      tags: [Orders]
+      summary: Расчет стоимости доставки
+      operationId: calculateOrder
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculateOrderRequest'
+            examples:
+              curlExample:
+                summary: Из документации (CURL)
+                value:
+                  matter: "Документы"
+                  points:
+                    - address: "Москва, ул. Покровка, 11"
+                    - address: "Москва, ул. Солянка, 4"
+      responses:
+        '200':
+          description: Успешный расчет
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculateOrderResponse'
+              examples:
+                sample:
+                  summary: Из документации
+                  value:
+                    is_successful: true
+                    order:
+                      type: standard
+                      order_id: null
+                      order_name: null
+                      vehicle_type_id: 6
+                      created_datetime: "2025-09-12T15:17:29+03:00"
+                      finish_datetime: null
+                      status: null
+                      status_description: null
+                      matter: "Документы"
+                      total_weight_kg: 0
+                      is_client_notification_enabled: false
+                      is_contact_person_notification_enabled: false
+                      loaders_count: 0
+                      backpayment_details: null
+                      points:
+                        - point_id: null
+                          delivery_id: null
+                          client_order_id: null
+                          address: "Москва, ул. Покровка, 11"
+                          latitude: "55.7592577"
+                          longitude: "37.6436554"
+                          required_start_datetime: "2025-09-12T15:47:29+03:00"
+                          required_finish_datetime: "2025-09-12T16:17:29+03:00"
+                          arrival_start_datetime: null
+                          arrival_finish_datetime: null
+                          estimated_arrival_datetime: "2025-09-12T15:47:29+03:00"
+                          courier_visit_datetime: null
+                          contact_person: { name: null, phone: "79030000001" }
+                          taking_amount: "0.00"
+                          buyout_amount: "0.00"
+                          note: null
+                          packages: []
+                          is_cod_cash_voucher_required: false
+                          is_order_payment_here: false
+                          building_number: null
+                          entrance_number: null
+                          intercom_code: null
+                          floor_number: null
+                          apartment_number: null
+                          invisible_mile_navigation_instructions: null
+                          place_photo_url: null
+                          sign_photo_url: null
+                          checkin_code: null
+                          checkin: null
+                          is_return_point: false
+                          tracking_url: null
+                        - point_id: null
+                          delivery_id: null
+                          client_order_id: null
+                          address: "Москва, ул. Солянка, 4"
+                          latitude: "55.7537310"
+                          longitude: "37.6372230"
+                          required_start_datetime: "2025-09-12T16:47:29+03:00"
+                          required_finish_datetime: "2025-09-12T17:17:29+03:00"
+                          arrival_start_datetime: null
+                          arrival_finish_datetime: null
+                          estimated_arrival_datetime: "2025-09-12T16:47:29+03:00"
+                          courier_visit_datetime: null
+                          contact_person: { name: null, phone: "79030000002" }
+                          taking_amount: "0.00"
+                          buyout_amount: "0.00"
+                          note: null
+                          packages: []
+                          is_cod_cash_voucher_required: false
+                          is_order_payment_here: false
+                          building_number: null
+                          entrance_number: null
+                          intercom_code: null
+                          floor_number: null
+                          apartment_number: null
+                          invisible_mile_navigation_instructions: null
+                          place_photo_url: null
+                          sign_photo_url: null
+                          checkin_code: null
+                          checkin: null
+                          is_return_point: false
+                          tracking_url: null
+                      payment_amount: "390.00"
+                      delivery_fee_amount: "390.00"
+                      weight_fee_amount: "0.00"
+                      insurance_amount: "0.00"
+                      insurance_fee_amount: "0.00"
+                      loading_fee_amount: "0.00"
+                      money_transfer_fee_amount: "0.00"
+                      overnight_fee_amount: "0.00"
+                      promo_code_discount_amount: "80.00"
+                      backpayment_amount: "0.00"
+                      cod_fee_amount: "0.00"
+                      return_fee_amount: "0.00"
+                      waiting_fee_amount: "0.00"
+                      late_cancellation_fee_amount: "0.00"
+                      late_cancellation_penalty_amount: "0.00"
+                      backpayment_photo_url: null
+                      itinerary_document_url: null
+                      waybill_document_url: null
+                      courier: null
+                      courier_vehicle: null
+                      is_motobox_required: false
+                      payment_method: cash
+                      bank_card_id: null
+                      applied_promo_code: "FIRST_ORDER"
+                      is_return_required: false
+                      vat_fee_amount: "0.00"
+                    warnings: ["invalid_parameters"]
+                    parameter_warnings:
+                      points:
+                        - contact_person:
+                            phone: ["required"]
+                        - contact_person:
+                            phone: ["required"]
+        '400':
+          description: Ошибка валидации параметров
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /create-order:
+    post:
+      tags: [Orders]
+      summary: Создание заказа
+      description: |
+        Оформление заказа. Для заказов типа same_day требуется передавать ровно 2 точки: у первой не задаются
+        required_start_datetime/required_finish_datetime, у второй — оба времени должны соответствовать интервалу
+        из метода /delivery-intervals. Для same_day общий вес обязателен (> 0), vehicle_type_id не передается.
+      operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/CalculateOrderRequest'
+                - type: object
+                  properties:
+                    matter:
+                      type: string
+                    points:
+                      type: array
+                      items:
+                        allOf:
+                          - $ref: '#/components/schemas/PointInput'
+                          - type: object
+                            required: [address, contact_person]
+                  required: [matter, points]
+                  allOf:
+                    - if:
+                        properties: { type: { const: same_day } }
+                      then:
+                        required: [total_weight_kg]
+                        properties:
+                          total_weight_kg: { minimum: 1 }
+                          vehicle_type_id: false
+                          points:
+                            type: array
+                            minItems: 2
+                            maxItems: 2
+                            prefixItems:
+                              - allOf:
+                                  - $ref: '#/components/schemas/PointInput'
+                                  - type: object
+                                    properties:
+                                      required_start_datetime: { const: null }
+                                      required_finish_datetime: { const: null }
+                              - allOf:
+                                  - $ref: '#/components/schemas/PointInput'
+                                  - type: object
+                                    properties:
+                                      required_start_datetime: { type: string, format: date-time }
+                                      required_finish_datetime: { type: string, format: date-time }
+                                    required: [required_start_datetime, required_finish_datetime]
+      responses:
+        '200':
+          description: Заказ успешно создан
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiSuccess'
+                  - type: object
+                    properties:
+                      order:
+                        $ref: '#/components/schemas/Order'
+        '400':
+          description: Ошибка валидации параметров
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /orders:
+    get:
+      tags: [Orders]
+      summary: Получение списка заказов
+      operationId: listOrders
+      parameters:
+        - name: order_id
+          in: query
+          description: Полный номер заказа или список номеров заказов
+          schema:
+            oneOf:
+              - type: integer
+              - type: array
+                items: { type: integer }
+          style: form
+          explode: true
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/OrderStatus'
+          description: Статус заказа
+        - name: created_datetime_from
+          in: query
+          description: Дата и время создания заказа (от) ISO 8601
+          schema:
+            type: string
+            format: date-time
+        - name: created_datetime_to
+          in: query
+          description: Дата и время создания заказа (до) ISO 8601
+          schema:
+            type: string
+            format: date-time
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Смещение в списке
+        - name: count
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 50
+          description: Количество на странице (макс. 50)
+        - name: next_page_id
+          in: query
+          schema:
+            type: integer
+          description: Идентификатор заказа для итеративной пагинации
+      responses:
+        '200':
+          description: Список заказов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersListResponse'
+              examples:
+                sample:
+                  summary: Пример ответа
+                  value:
+                    is_successful: true
+                    orders:
+                      - order_id: 1250032
+                        order_name: "50032"
+                        type: standard
+                        vehicle_type_id: 7
+                        created_datetime: "2025-09-12T15:17:29+03:00"
+                        finish_datetime: null
+                        status: active
+                        status_description: "active"
+                        matter: "Цветы"
+                        total_weight_kg: 0
+                        is_client_notification_enabled: false
+                        is_contact_person_notification_enabled: false
+                        loaders_count: 0
+                        backpayment_details: null
+                        points:
+                          - point_id: 202685
+                            delivery_id: null
+                            client_order_id: null
+                            address: "Москва, ул. Покровка, 11"
+                            latitude: "55.7592577"
+                            longitude: "37.6436554"
+                            required_start_datetime: "2025-09-12T15:47:29+03:00"
+                            required_finish_datetime: "2025-09-12T16:17:29+03:00"
+                            arrival_start_datetime: null
+                            arrival_finish_datetime: null
+                            estimated_arrival_datetime: null
+                            courier_visit_datetime: null
+                            contact_person:
+                              name: null
+                              phone: "79030000001"
+                            taking_amount: "0.00"
+                            buyout_amount: "0.00"
+                            note: null
+                            packages: []
+                            is_cod_cash_voucher_required: false
+                            is_order_payment_here: false
+                            building_number: null
+                            entrance_number: null
+                            intercom_code: null
+                            floor_number: null
+                            apartment_number: null
+                            invisible_mile_navigation_instructions: null
+                            is_return_point: false
+                        payment_amount: "390.00"
+                        delivery_fee_amount: "390.00"
+                        weight_fee_amount: "0.00"
+                        insurance_amount: "0.00"
+                        insurance_fee_amount: "0.00"
+                        loading_fee_amount: "0.00"
+                        money_transfer_fee_amount: "0.00"
+                        cod_fee_amount: "0.00"
+                        overnight_fee_amount: "0.00"
+                        promo_code_discount_amount: "0.00"
+                        return_fee_amount: "0.00"
+                        waiting_fee_amount: "0.00"
+                        late_cancellation_fee_amount: "0.00"
+                        late_cancellation_penalty_amount: "0.00"
+                        is_motobox_required: false
+                        payment_method: balance
+                        bank_card_id: null
+                        applied_promo_code: null
+                        is_return_required: false
+                        vat_fee_amount: "0.00"
+                    next_page_id: null
+                    orders_count: 1
+        '400':
+          description: Ошибка запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+# TODO / Прогресс по спецификации:
+# [x] Couriers: данные и геолокация курьера (GET /courier)
+# [x] Client: данные клиентского профиля (GET /client)
+# [x] BankCards: привязанные банковские карты (GET /bank-cards)
+# [x] Intervals: получение интервалов (GET /delivery-intervals)
+# [x] Deliveries: CRUD черновиков доставок (create/edit/delete/list) + маршруты
+# [x] Receipts: детализация стоимости заказа (GET /receipts)
+# [x] Orders: calculate/create/list/edit/cancel
+# [x] Dictionaries: справочники (если применимо)
+# [ ] Дополнить модели (Order/Point/Package и др.) всеми полями из донорских глав (частично сделано)
+# [ ] Перенести все примеры запросов/ответов из донорских разделов (частично сделано)
+# [x] Описать общие коды ошибок и ошибки параметров как схемы (enum/oneOf)
+  /edit-order:
+    post:
+      tags: [Orders]
+      summary: Редактирование заказа
+      description: |
+        Редактирование заказа в статусах new, available, active или delayed. Передавайте только изменяемые поля.
+        Передача null удаляет значение. Для изменения точки требуется передать её point_id; точки без point_id
+        трактуются как новые, а не переданные — будут удалены. Аналогично для посылок: требуется order_package_id.
+      operationId: editOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditOrderRequest'
+
+      responses:
+        '200':
+          description: Заказ отредактирован
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiSuccess'
+                  - type: object
+                    properties:
+                      order:
+                        $ref: '#/components/schemas/Order'
+        '400':
+          description: Ошибка запроса/валидации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /cancel-order:
+    post:
+      tags: [Orders]
+      summary: Отмена заказа
+      description: |
+        Отмена заказа в статусах new, available, active или delayed. Если курьер посетил хотя бы одну точку,
+        отмена невозможна.
+      operationId: cancelOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order_id:
+                  type: integer
+              required: [order_id]
+      responses:
+        '200':
+          description: Заказ отменен
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiSuccess'
+                  - type: object
+                    properties:
+                      order:
+                        $ref: '#/components/schemas/Order'
+        '400':
+          description: Ошибка запроса/валидации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /delivery-intervals:
+    get:
+      tags: [Intervals]
+      summary: Получение списка интервалов
+      operationId: getDeliveryIntervals
+      parameters:
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Дата для получения интервалов
+      responses:
+        '200':
+          description: Доступные интервалы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryIntervalsResponse'
+              examples:
+                sample:
+                  summary: Из документации
+                  value:
+                    is_successful: true
+                    delivery_intervals:
+                      - required_start_datetime: "2025-09-12T10:00:00+03:00"
+                        required_finish_datetime: "2025-09-12T14:00:00+03:00"
+                      - required_start_datetime: "2025-09-12T11:00:00+03:00"
+                        required_finish_datetime: "2025-09-12T15:00:00+03:00"
+                      - required_start_datetime: "2025-09-12T12:00:00+03:00"
+                        required_finish_datetime: "2025-09-12T16:00:00+03:00"
+        '400':
+          description: Ошибка запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /create-deliveries:
+    post:
+      tags: [Deliveries]
+      summary: Создание черновиков доставок
+      description: |
+        Создает черновики доставок. Для каждого черновика обязательны: address, contact_person.phone, weight_kg, matter.
+      operationId: createDeliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deliveries:
+                  type: array
+                  items:
+                    allOf:
+                      - $ref: '#/components/schemas/DeliveryDraftInput'
+                    required: [matter, weight_kg]
+              required: [deliveries]
+      responses:
+        '200':
+          description: Черновики доставок созданы
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiSuccess'
+                  - type: object
+                    properties:
+                      deliveries:
+                        type: array
+                        items: { $ref: '#/components/schemas/Delivery' }
+        '400':
+          description: Ошибка запроса/валидации
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /edit-deliveries:
+    post:
+      tags: [Deliveries]
+      summary: Редактирование черновиков доставок
+      description: |
+        Редактирует существующие черновики доставок. Для каждой записи требуется delivery_id. Отсутствующие записи
+        будут созданы, а не переданные — могут быть удалены.
+      operationId: editDeliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deliveries:
+                  type: array
+                  items:
+                    allOf:
+                      - $ref: '#/components/schemas/DeliveryDraftInput'
+                      - type: object
+                        properties:
+                          delivery_id:
+                            type: integer
+                        required: [delivery_id]
+              required: [deliveries]
+      responses:
+        '200':
+          description: Черновики доставок отредактированы
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiSuccess'
+                  - type: object
+                    properties:
+                      deliveries:
+                        type: array
+                        items: { $ref: '#/components/schemas/Delivery' }
+        '400':
+          description: Ошибка запроса/валидации
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /delete-deliveries:
+    post:
+      tags: [Deliveries]
+      summary: Удаление черновиков доставок
+      description: |
+        Удаляет черновики доставок по списку идентификаторов.
+      operationId: deleteDeliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delivery_ids:
+                  type: array
+                  items: { type: integer }
+              required: [delivery_ids]
+      responses:
+        '200':
+          description: Доставки удалены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess'
+        '400':
+          description: Ошибка запроса/валидации
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /deliveries:
+    get:
+      tags: [Deliveries]
+      summary: Получение списка доставок
+      operationId: listDeliveries
+      parameters:
+        - name: delivery_ids
+          in: query
+          schema:
+            type: array
+            items: { type: integer }
+          style: form
+          explode: true
+          description: Список номеров доставок
+        - name: search_text
+          in: query
+          schema: { type: string }
+          description: Поиск по полям заказа/адреса/контакта
+        - name: status
+          in: query
+          schema: { $ref: '#/components/schemas/DeliveryStatus' }
+          description: Статус доставки
+        - name: offset
+          in: query
+          schema: { type: integer, default: 0 }
+        - name: count
+          in: query
+          schema: { type: integer, default: 100, maximum: 100 }
+        - name: next_page_id
+          in: query
+          schema: { type: integer }
+          description: Идентификатор для итеративной пагинации
+      responses:
+        '200':
+          description: Список доставок
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveriesListResponse'
+              examples:
+                sample:
+                  summary: Из документации (draft)
+                  value:
+                    is_successful: true
+                    deliveries:
+                      - delivery_id: 11712
+                        delivery_type: plain
+                        order_id: null
+                        client_id: 180179
+                        client_order_id: null
+                        address: "Москва, ул. Покровка, 11"
+                        latitude: null
+                        longitude: null
+                        status: draft
+                        status_datetime: "2025-09-12T15:17:29+03:00"
+                        created_datetime: "2025-09-12T15:17:29+03:00"
+                        order_name: null
+                        order_payment_amount: null
+                        delivery_price_amount: null
+                        cancel_reason: null
+                        point_id: null
+                        contact_person: { name: null, phone: "79030000001" }
+                        note: null
+                        building_number: null
+                        apartment_number: null
+                        entrance_number: null
+                        intercom_code: null
+                        floor_number: null
+                        invisible_mile_navigation_instructions: null
+                        required_start_datetime: null
+                        required_finish_datetime: null
+                        taking_amount: "0.00"
+                        buyout_amount: "0.00"
+                        is_cod_cash_voucher_required: false
+                        is_motobox_required: false
+                        is_door_to_door: false
+                        is_return_to_first_point_required: false
+                        matter: "Документы"
+                        insurance_amount: "0.00"
+                        weight_kg: 1
+                        packages: []
+                        checkin_issue_name: null
+                      - delivery_id: 11713
+                        delivery_type: plain
+                        order_id: null
+                        client_id: 180179
+                        client_order_id: null
+                        address: "Москва, ул. Солянка, 4"
+                        latitude: null
+                        longitude: null
+                        status: draft
+                        status_datetime: "2025-09-12T15:17:29+03:00"
+                        created_datetime: "2025-09-12T15:17:29+03:00"
+                        order_name: null
+                        order_payment_amount: null
+                        delivery_price_amount: null
+                        cancel_reason: null
+                        point_id: null
+                        contact_person: { name: null, phone: "79030000001" }
+                        note: null
+                        building_number: null
+                        apartment_number: null
+                        entrance_number: null
+                        intercom_code: null
+                        floor_number: null
+                        invisible_mile_navigation_instructions: null
+                        required_start_datetime: null
+                        required_finish_datetime: null
+                        taking_amount: "0.00"
+                        buyout_amount: "0.00"
+                        is_cod_cash_voucher_required: false
+                        is_motobox_required: false
+                        is_door_to_door: false
+                        is_return_to_first_point_required: false
+                        matter: "Цветы"
+                        insurance_amount: "0.00"
+                        weight_kg: 2
+                        packages: []
+                        checkin_issue_name: null
+                    deliveries_count: 2
+        '400':
+          description: Ошибка запроса
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /make-deliveries-routes:
+    post:
+      tags: [Deliveries]
+      summary: Построить маршруты из доставок
+      description: |
+        Строит маршрутные точки на основе списка доставок и стартовой точки. Не изменяет сами доставки.
+      operationId: makeDeliveriesRoutes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MakeDeliveriesRoutesRequest'
+      responses:
+        '200':
+          description: Построенные маршруты
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MakeDeliveriesRoutesResponse'
+        '400':
+          description: Ошибка запроса
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /courier:
+    get:
+      tags: [Couriers]
+      summary: Данные и местоположение курьера
+      operationId: getCourier
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          schema: { type: integer }
+          description: Полный номер заказа
+      responses:
+        '200':
+          description: Данные курьера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourierResponse'
+              examples:
+                sample:
+                  summary: Из документации
+                  value:
+                    is_successful: true
+                    courier:
+                      courier_id: 72384
+                      surname: "Surname"
+                      name: "Name"
+                      middlename: null
+                      phone: "79030000001"
+                      photo_url: null
+                      latitude: "55.7537310"
+                      longitude: "37.6372230"
+                    courier_vehicle:
+                      number: "A912MP"
+                      region: "66"
+                      color: "Blue-black"
+                      name: "Supertrack"
+        '400':
+          description: Ошибка запроса
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /client:
+    get:
+      tags: [Client]
+      summary: Данные клиентского профиля
+      operationId: getClient
+      responses:
+        '200':
+          description: Данные клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientResponse'
+              examples:
+                sample:
+                  summary: Из документации
+                  value:
+                    is_successful: true
+                    client:
+                      name: "Name"
+                      phone: "79030000001"
+                      email: "test@example.com"
+                      legal_type: "individual_person"
+                      allowed_payment_methods: ["cash", "bank_card"]
+        '400':
+          description: Ошибка запроса
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /bank-cards:
+    get:
+      tags: [BankCards]
+      summary: Привязанные банковские карты
+      operationId: getBankCards
+      responses:
+        '200':
+          description: Список банковских карт
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankCardsResponse'
+              examples:
+                sample:
+                  summary: Из документации
+                  value:
+                    is_successful: true
+                    bank_cards:
+                      - bank_card_id: 80
+                        bank_card_number_mask: "411111XXXXXX1111"
+                        expiration_date: "2029-01-31"
+                        card_type: "visa"
+        '400':
+          description: Ошибка запроса
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /receipts:
+    get:
+      tags: [Receipts]
+      summary: Детализация стоимости заказа
+      operationId: getReceipts
+      parameters:
+        - name: order_id
+          in: query
+          description: Номер заказа или список номеров (макс. 10)
+          schema:
+            oneOf:
+              - type: integer
+              - type: array
+                maxItems: 10
+                items: { type: integer }
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: Детализация по заказам
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptsResponse'
+              examples:
+                sample:
+                  summary: Из документации
+                  value:
+                    is_successful: true
+                    receipts:
+                      - order_id: 340500
+                        total_payment_amount: "459.00"
+                        total_payment_vat_amount: "76.50"
+                        royalty_fee_amount: "0.00"
+                        royalty_fee_vat_amount: "0.00"
+                        delivery_fee_amount: "441.00"
+                        delivery_fee_vat_amount: "73.50"
+                        return_fee_amount: "0.00"
+                        return_fee_vat_amount: "0.00"
+                        waiting_fee_amount: "0.00"
+                        waiting_fee_vat_amount: "0.00"
+                        sms_fee_amount: "0.00"
+                        sms_fee_vat_amount: "0.00"
+                        insurance_fee_amount: "10.00"
+                        insurance_fee_vat_amount: "1.67"
+                        cod_fee_amount: "0.00"
+                        cod_fee_vat_amount: "0.00"
+                        buyout_fee_amount: "8.00"
+                        buyout_fee_vat_amount: "1.33"
+                        late_cancellation_fee_amount: "0.00"
+                        late_cancellation_fee_vat_amount: "0.00"
+        '400':
+          description: Ошибка запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'

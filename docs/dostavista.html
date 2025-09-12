@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>API Hub</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      #redoc-container,
+      #swagger-ui {
+        height: 100%;
+      }
+      #swagger-ui {
+        display: none;
+      }
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: #f8f8f8;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 10px;
+        z-index: 1000;
+      }
+      .navbar button {
+        margin-right: 10px;
+      }
+      .content {
+        position: absolute;
+        top: 50px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <button onclick="showRedoc()">ReDoc</button>
+      <button onclick="showSwagger()">Swagger UI</button>
+    </div>
+    <div class="content">
+      <div id="redoc-container"></div>
+      <div id="swagger-ui"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+    <script>
+      const specUrl = './dostavista/openapi.yaml';
+      function showRedoc() {
+        document.getElementById('redoc-container').style.display = 'block';
+        document.getElementById('swagger-ui').style.display = 'none';
+      }
+      function showSwagger() {
+        document.getElementById('redoc-container').style.display = 'none';
+        document.getElementById('swagger-ui').style.display = 'block';
+        if (!window.swaggerInitialized) {
+          window.swaggerInitialized = true;
+          SwaggerUIBundle({ url: specUrl, dom_id: '#swagger-ui' });
+        }
+      }
+      Redoc.init(specUrl, {}, document.getElementById('redoc-container'));
+    </script>
+  </body>
+</html>

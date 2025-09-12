@@ -1,0 +1,19 @@
+{
+  "path": "/1.5/orders",
+  "method": "GET",
+  "summary": "Получение списка заказов",
+  "request_fields": [
+    {"name": "order_id", "description": "Полный номер заказа или список номеров", "type": "integer|array[integer]", "required": "Нет", "example": [1234567, 1234568]},
+    {"name": "status", "description": "Статус заказов для поиска", "type": "string", "required": "Нет", "example": "active"},
+    {"name": "created_datetime_from", "description": "Дата/время создания (от) ISO 8601", "type": "datetime", "required": "Нет", "example": "2025-09-12T15:17:29+03:00"},
+    {"name": "created_datetime_to", "description": "Дата/время создания (до) ISO 8601", "type": "datetime", "required": "Нет", "example": "2025-09-12T16:17:29+03:00"},
+    {"name": "offset", "description": "Смещение в списке", "type": "integer", "required": "Нет", "example": 0},
+    {"name": "count", "description": "Количество записей (макс. 50)", "type": "integer", "required": "Нет", "example": 10},
+    {"name": "next_page_id", "description": "Идентификатор заказа для итеративной пагинации", "type": "integer", "required": "Нет", "example": null}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "orders", "description": "Список заказов", "type": "array", "required": "Да"},
+    {"name": "next_page_id", "description": "ID для следующей страницы", "type": "integer", "required": "Нет"}
+  ]
+}

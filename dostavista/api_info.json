@@ -1,0 +1,23 @@
+{
+  "base_url": "https://robotapi.dostavista.ru/api/business/1.5",
+  "authorization": [
+    "X-DV-Auth-Token header"
+  ],
+  "endpoints": [
+    { "path": "/1.5/calculate-order", "method": "POST", "summary": "Расчет стоимости доставки" },
+    { "path": "/1.5/create-order", "method": "POST", "summary": "Создание заказа" },
+    { "path": "/1.5/orders", "method": "GET", "summary": "Получение списка заказов" },
+    { "path": "/1.5/edit-order", "method": "POST", "summary": "Редактирование заказа" },
+    { "path": "/1.5/cancel-order", "method": "POST", "summary": "Отмена заказа" },
+    { "path": "/1.5/receipts", "method": "GET", "summary": "Детализация стоимости заказа" },
+    { "path": "/1.5/delivery-intervals", "method": "GET", "summary": "Список интервалов доставки" },
+    { "path": "/1.5/create-deliveries", "method": "POST", "summary": "Создание черновиков доставок" },
+    { "path": "/1.5/edit-deliveries", "method": "POST", "summary": "Редактирование черновиков доставок" },
+    { "path": "/1.5/delete-deliveries", "method": "POST", "summary": "Удаление черновиков доставок" },
+    { "path": "/1.5/deliveries", "method": "GET", "summary": "Список доставок" },
+    { "path": "/1.5/make-deliveries-routes", "method": "POST", "summary": "Построить маршруты из доставок" },
+    { "path": "/1.5/courier", "method": "GET", "summary": "Данные и местоположение курьера" },
+    { "path": "/1.5/client", "method": "GET", "summary": "Данные клиентского профиля" },
+    { "path": "/1.5/bank-cards", "method": "GET", "summary": "Привязанные банковские карты" }
+  ]
+}

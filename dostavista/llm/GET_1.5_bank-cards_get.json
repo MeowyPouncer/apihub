@@ -1,0 +1,9 @@
+{
+  "path": "/1.5/bank-cards",
+  "method": "GET",
+  "summary": "Привязанные банковские карты",
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "bank_cards", "description": "Список карт", "type": "array", "required": "Да"}
+  ]
+}

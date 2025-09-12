@@ -1,0 +1,15 @@
+{
+  "path": "/1.5/edit-order",
+  "method": "POST",
+  "summary": "Редактирование заказа",
+  "request_fields": [
+    {"name": "order_id", "description": "Полный номер редактируемого заказа", "type": "integer", "required": "Да", "example": 1250032},
+    {"name": "matter", "description": "Что везем (замена значения)", "type": "string", "required": "Нет", "example": "Цветы"},
+    {"name": "backpayment_details", "description": "Реквизиты для перевода выручки (null — удалить)", "type": "string|null", "required": "Нет", "example": null},
+    {"name": "points", "description": "Редактирование точек: передавайте point_id для изменения, опущенные точки будут удалены, новые без point_id — добавлены", "type": "array", "required": "Нет", "example": [{"point_id": 202685}, {"point_id": 202686, "required_start_datetime": "2025-09-12T16:47:29+03:00", "required_finish_datetime": "2025-09-12T17:17:29+03:00"}, {"address": "Москва, ул. Покровка, 11", "contact_person": {"phone": "79030000001"}}]}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "order", "description": "Данные отредактированного заказа", "type": "object", "required": "Да"}
+  ]
+}

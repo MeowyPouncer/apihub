@@ -1,0 +1,18 @@
+{
+  "path": "/1.5/deliveries",
+  "method": "GET",
+  "summary": "Получение списка доставок",
+  "request_fields": [
+    {"name": "delivery_ids", "description": "Список номеров доставок", "type": "array[integer]", "required": "Нет", "example": [11712, 11713]},
+    {"name": "search_text", "description": "Поиск по order_id, client_order_id, address, contact_person.*", "type": "string", "required": "Нет", "example": "Москва"},
+    {"name": "status", "description": "Статус доставок", "type": "string", "required": "Нет", "example": "draft"},
+    {"name": "offset", "description": "Смещение", "type": "integer", "required": "Нет", "example": 0},
+    {"name": "count", "description": "Размер страницы (max 100)", "type": "integer", "required": "Нет", "example": 100},
+    {"name": "next_page_id", "description": "Итеративная пагинация", "type": "integer", "required": "Нет", "example": null}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "deliveries", "description": "Список доставок", "type": "array", "required": "Да"},
+    {"name": "next_page_id", "description": "Следующая страница", "type": "integer", "required": "Нет"}
+  ]
+}

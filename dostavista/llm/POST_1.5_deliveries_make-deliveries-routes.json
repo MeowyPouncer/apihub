@@ -1,0 +1,14 @@
+{
+  "path": "/1.5/make-deliveries-routes",
+  "method": "POST",
+  "summary": "Построить маршруты из доставок",
+  "request_fields": [
+    {"name": "vehicle_type_id", "description": "Тип транспорта", "type": "integer|null", "required": "Нет", "example": 6},
+    {"name": "start_point", "description": "Стартовая точка", "type": "object", "required": "Да", "example": {"address": "Москва, ул. Покровка, 11"}},
+    {"name": "deliveries", "description": "Список delivery_id", "type": "array[object]", "required": "Да", "example": [{"delivery_id": 11712}, {"delivery_id": 11713}]}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "routes", "description": "Построенные маршруты", "type": "array", "required": "Да"}
+  ]
+}

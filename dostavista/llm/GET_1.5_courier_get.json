@@ -1,0 +1,13 @@
+{
+  "path": "/1.5/courier",
+  "method": "GET",
+  "summary": "Данные и местоположение курьера",
+  "request_fields": [
+    {"name": "order_id", "description": "Полный номер заказа", "type": "integer", "required": "Да", "example": 1250032}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "courier", "description": "Данные курьера", "type": "object|null", "required": "Нет"},
+    {"name": "courier_vehicle", "description": "ТС курьера", "type": "object|null", "required": "Нет"}
+  ]
+}

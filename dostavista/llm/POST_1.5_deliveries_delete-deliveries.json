@@ -1,0 +1,11 @@
+{
+  "path": "/1.5/delete-deliveries",
+  "method": "POST",
+  "summary": "Удаление черновиков доставок",
+  "request_fields": [
+    {"name": "delivery_ids", "description": "Список delivery_id для удаления", "type": "array[integer]", "required": "Да", "example": [11712, 11713]}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"}
+  ]
+}

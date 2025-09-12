@@ -1,0 +1,12 @@
+{
+  "path": "/1.5/cancel-order",
+  "method": "POST",
+  "summary": "Отмена заказа",
+  "request_fields": [
+    {"name": "order_id", "description": "Полный номер заказа для отмены", "type": "integer", "required": "Да", "example": 1250032}
+  ],
+  "response_fields": [
+    {"name": "is_successful", "description": "Флаг успешности", "type": "boolean", "required": "Да"},
+    {"name": "order", "description": "Данные отмененного заказа", "type": "object", "required": "Да"}
+  ]
+}
