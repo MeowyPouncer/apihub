@@ -3,11 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <title>API Hub</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+        line-height: 1.6;
+      }
+      header {
+        margin-bottom: 2rem;
+      }
+      nav ul {
+        list-style: none;
+        padding: 0;
+      }
+      nav li {
+        margin: 0.5rem 0;
+      }
+      nav a {
+        text-decoration: none;
+        color: #007bff;
+      }
+      nav a:hover {
+        text-decoration: underline;
+      }
+      section + section {
+        margin-top: 2rem;
+      }
+      footer {
+        margin-top: 3rem;
+        font-size: 0.9rem;
+        color: #777;
+      }
+    </style>
   </head>
   <body>
-    <h1>API Hub</h1>
-    <ul>
-      <li><a href="tk-kit.html">KIT API</a></li>
-    </ul>
+    <header>
+      <h1>API Hub</h1>
+      <p>Welcome to the hub for our API documentation. This site hosts guides and references for all available and upcoming APIs.</p>
+    </header>
+    <section>
+      <h2>Available APIs</h2>
+      <nav>
+        <ul>
+          <li><a href="tk-kit.html">KIT API</a></li>
+        </ul>
+      </nav>
+    </section>
+    <section>
+      <h2>Coming Soon</h2>
+      <p>Documentation for additional APIs will appear here as they become available.</p>
+    </section>
+    <footer>
+      <p>Use the links above to explore the APIs. Contributions and feedback are welcome.</p>
+    </footer>
   </body>
 </html>
