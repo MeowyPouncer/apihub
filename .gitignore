@@ -38,3 +38,8 @@ Gemfile.lock
 /.github/
 /apihub.egg-info/
 /QA.html
+/raw-data/
+/raw-data/*
+/scripts/
+/scripts/*
+/pyproject.toml
