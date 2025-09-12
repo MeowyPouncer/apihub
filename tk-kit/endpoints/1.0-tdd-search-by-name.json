@@ -1,5 +1,0 @@
-{
-  "path": "/1.0/tdd/search/by-name",
-  "method": "POST",
-  "summary": "Поиск по наименованию"
-}

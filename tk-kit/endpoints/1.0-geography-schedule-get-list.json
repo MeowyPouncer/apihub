@@ -1,5 +1,0 @@
-{
-  "path": "/1.0/geography/schedule/get-list",
-  "method": "GET",
-  "summary": "Список расписаний"
-}
