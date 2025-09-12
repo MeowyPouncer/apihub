@@ -3,7 +3,7 @@
 Коллекция спецификаций разных сервисов. Каждая папка содержит описание конкретного API.
 
 Документация публикуется на GitHub Pages:
-[https://tk-kit.github.io/apihub/](https://meowypouncer.github.io/apihub/)
+[APIHUB](https://meowypouncer.github.io/apihub/)
 
 ## Сервисы
 
