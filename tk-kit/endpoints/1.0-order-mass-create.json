@@ -1,5 +1,0 @@
-{
-  "path": "/1.0/order/mass-create",
-  "method": "POST",
-  "summary": "Массовое создание заказов"
-}

@@ -1,5 +1,0 @@
-{
-  "path": "/1.0/geography/phone/get-list",
-  "method": "GET",
-  "summary": "Список телефонов"
-}

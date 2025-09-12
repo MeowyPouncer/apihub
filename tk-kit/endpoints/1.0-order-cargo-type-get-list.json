@@ -1,5 +1,0 @@
-{
-  "path": "/1.0/order/cargo-type/get-list",
-  "method": "GET",
-  "summary": "Список типов груза"
-}

@@ -1,5 +1,0 @@
-{
-  "path": "/1.1/order/time-delivery",
-  "method": "GET",
-  "summary": "Сроки доставки (v1.1)"
-}

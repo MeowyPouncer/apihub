@@ -4,6 +4,7 @@
 
 - [OpenAPI спецификация](openapi.yaml)
 - [JSON структура для LLM](api_info.json)
+- [JSON по отдельным эндпоинтам](llm)
 
 ## Обновление JSON для LLM
 
