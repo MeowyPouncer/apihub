@@ -30,6 +30,8 @@ jobs:
         run: |
           mkdir -p docs/tk-kit
           cp tk-kit/openapi.yaml docs/tk-kit/
+          mkdir -p docs/dostavista
+          cp dostavista/openapi.yaml docs/dostavista/
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
