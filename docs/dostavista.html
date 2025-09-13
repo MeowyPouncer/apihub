@@ -55,11 +55,13 @@
     <div id="redoc-container"></div>
     <div id="swagger-ui"></div>
     <div id="explorer">
+
         <openapi-explorer spec-url="../dostavista/openapi.yaml">
             <div slot="overview">
                 <h1>The API</h1>
             </div>
         </openapi-explorer>
+
     </div>
 </div>
 <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
@@ -67,6 +69,7 @@
 <script src="https://cdn.jsdelivr.net/npm/openapi-explorer@2.2.773/dist/browser/openapi-explorer.min.js"></script>
 <script>
     const specUrl = './dostavista/openapi.yaml';
+
 
     function showRedoc() {
         document.getElementById('redoc-container').style.display = 'block';
